@@ -1,7 +1,14 @@
+import { useEffect } from "react"
+
 import Header from "../components/Header"
 import type { ThemeProp } from "../types"
 
-const CartPage = ({theme, setTheme}: ThemeProp) => {
+const CartPage = ({ theme, setTheme }: ThemeProp) => {
+
+  useEffect(() => {
+    document.title = 'Cart'
+  }, [])
+
   return (
     <main>
       <Header theme={theme} setTheme={setTheme} />

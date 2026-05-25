@@ -6,6 +6,7 @@ import HomePage from './pages/homePage/HomePage'
 import AboutPage from './pages/AboutPage'
 import CartPage from './pages/CartPage'
 import ProductPage from './pages/productPage/ProductPage'
+import Item from './components/Item'
 
 function App() {
   const [theme, setTheme] = useState<'winter' | 'dracula'>(() => {
@@ -31,6 +32,9 @@ function App() {
         theme={theme} setTheme={setTheme}
       />} />
       <Route path='/products' element={<ProductPage
+        theme={theme} setTheme={setTheme}
+      />} />
+      <Route path='/item/1' element={<Item
         theme={theme} setTheme={setTheme}
       />} />
     </Routes>

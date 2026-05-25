@@ -7,7 +7,7 @@ const Products = () => {
 
   const [gridForm, setGridForm] = useState<'col' | 'row'>('col')
 
-  const activeIcon = (colRow: 'col' | 'row') => `${gridForm === colRow && 'btn btn-sm p-1 btn-primary rounded-full'}`
+  const activeIcon = (colRow: 'col' | 'row') => `${gridForm === colRow ? 'btn btn-sm p-1 btn-primary rounded-full' : 'btn btn-sm p-1 hover:bg-base-200 rounded-full bg-transparent'}`
 
   return (
     <section className="w-10/12 mx-auto text-base-content pb-5">
@@ -31,11 +31,11 @@ const Products = () => {
       {/* Change page */}
       <div className="text-base-content flex my-20 items-end justify-end">
         <div className="bg-base-200 rounded-xl">
-          <button className="btn btn-sm md:btn-md">PREV</button>
-          <button className="btn btn-sm md:btn-md ">1</button>
-          <button className="btn btn-sm btn-active md:btn-md ">2</button>
-          <button className="btn btn-sm md:btn-md ">3</button>
-          <button className="btn btn-sm md:btn-md ">NEXT</button>
+          <button className="btn btn-sm md:btn-lg rounded-r-none">PREV</button>
+          <button className="btn btn-sm md:btn-lg btn-active rounded-none">1</button>
+          <button className="btn btn-sm md:btn-lg rounded-none">2</button>
+          <button className="btn btn-sm md:btn-lg rounded-none">3</button>
+          <button className="btn btn-sm md:btn-lg rounded-l-none">NEXT</button>
         </div>
       </div>
 
