@@ -1,31 +1,40 @@
+import { useEffect, useState } from "react"
+
 import { BsCart3 } from "react-icons/bs"
-import { MdDarkMode } from "react-icons/md"
+import { MdDarkMode, MdLightMode } from "react-icons/md"
 import { RiMenu3Fill } from "react-icons/ri"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
+import type { ThemeProp } from "../types"
 
-const NavBar = ({ showMenu, setShowMenu }: { showMenu: boolean; setShowMenu: (show: boolean) => void }) => {
+const NavBar = ({ theme, setTheme }: ThemeProp) => {
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
-  // const showMenu = () => {
-  //   const menu = document.querySelector('.menu')
-  //   menu?.classList.toggle('hidden')
-  // }
+  useEffect(() => {
+    const handleClick = () => setShowMenu(false);
 
-  const activeLink = (({ isActive }: { isActive: boolean; }) => isActive ? 'bg-black text-gray-400 rounded-lg px-3 py-1 md:px-4 md:py-2 text-sm w-full block' : 'text-gray-700 rounded-lg px-3 py-1 text-sm md:px-4 md:py-2 hover:bg-gray-300 transition-all duration-500 w-full block')
+    window.addEventListener('click', handleClick);
+
+    return () => {
+      window.removeEventListener('click', handleClick);
+    };
+  }, []);
+
+  const activeLink = (({ isActive }: { isActive: boolean; }) => isActive ? `bg-neutral text-neutral-content rounded-lg px-3 py-1 md:px-4 md:py-2 text-sm w-full block` : `text-base-content hover:bg-base-200 md:hover:bg-base-300 rounded-lg px-3 py-1 text-sm md:px-4 md:py-2 transition-all duration-500 w-full block`)
 
   return (
-    <nav className="w-screen bg-[hsla(216,100%,97%,1)] py-2">
+    <nav className="w-screen bg-base-200 py-2">
       <div className="mx-auto w-10/12 flex justify-between">
         <div className="relative md:flex items-center gap-5 justify-between flex-1">
-          <button className="md:hidden hover:bg-gray-300 rounded-md text-3xl px-4 py-3 cursor-pointer transition-all duration-500" onClick={(e) => {
+          <button className={`md:hidden hover:bg-base-300 rounded-md text-3xl px-4 py-3 cursor-pointer transition-all duration-500`} onClick={(e) => {
             setShowMenu(true);
             e.stopPropagation();
-  }}>
+          }}>
             <RiMenu3Fill />
           </button>
-          <button className="hidden md:block bg-blue-500 px-5 py-2 rounded-xl hover:bg-blue-600 transition-all duration-500 uppercase text-3xl text-gray-200 font-bold cursor-pointer">C</button>
+          <Link to='/' className="hidden md:block bg-primary py-2 px-4 rounded-xl text-base-300 transition-all duration-500 uppercase text-3xl font-bold hover:opacity-80">C</Link>
           <ul
-          onClick={e => e.stopPropagation()}
-          className={`capitalize absolute bg-[hsla(216,100%,97%,1)] p-2 top-17 rounded-2xl w-55 ${showMenu ? 'block' : 'hidden'} group-hover:block md:flex md:static md:w-auto md:mx-auto md:gap-2 md:items-center`}>
+            onClick={e => e.stopPropagation()}
+            className={`capitalize absolute p-2 top-17 rounded-2xl w-55 ${showMenu ? 'block' : 'hidden'} group-hover:block md:flex md:static md:w-auto md:mx-auto md:gap-2 md:items-center bg-base-300 md:bg-transparent`}>
             <li><NavLink to='/' className={activeLink}>Home</NavLink></li>
             <li><NavLink to='/about' className={activeLink}>about</NavLink></li>
             <li><NavLink to='/products' className={activeLink}>products</NavLink></li>
@@ -35,14 +44,19 @@ const NavBar = ({ showMenu, setShowMenu }: { showMenu: boolean; setShowMenu: (sh
           </ul>
         </div>
         <div className="flex gap-5 items-center">
-          <MdDarkMode className="text-2xl" />
-          <div className="relative">
-            <div className="hover:bg-gray-300 rounded-full text-3xl p-2 cursor-pointer transition-all duration-500 text-gray-600">
+          <button
+            onClick={() => setTheme(theme === 'winter' ? 'dracula' : 'winter')}
+            className="cursor-pointer text-xl md:text-2xl">
+            {theme === 'winter' ? <MdDarkMode className="text-base-content" /> : <MdLightMode className="text-base-content" />}
+          </button>
+
+          <Link to='/cart' className="relative btn btn-ghost btn-circle btn-md cursor-pointer">
+            <div className="rounded-full text-2xl p-2 transition-all duration-500 text-base-content hover:bg-base-200">
               <BsCart3 />
             </div>
 
-            <div className="absolute top-0 right-0 bg-blue-500 text-white rounded-full px-2.5 text-[12px]">0</div>
-          </div>
+            <div className="absolute -top-1.5 -right-1.5 badge badge-sm badge-primary">0</div>
+          </Link>
         </div>
       </div>
     </nav>

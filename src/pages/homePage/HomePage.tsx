@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Header from "../../components/Header"
-import Home from "./Home"
+import RenderHomePage from "./RenderHomePage"
+import type { ThemeProp } from "../../types"
 
-const HomePage = () => {
+const HomePage = ({theme, setTheme}: ThemeProp) => {
 
-    const [showMenu, setShowMenu] = useState<boolean>(false)
 
   useEffect(() => {
     document.title = 'Home page'
   }, [])
 
   return (
-    <main onClick={() => setShowMenu(false)}>
-      <Header showMenu={showMenu} setShowMenu={setShowMenu} />
-      <Home />
+    <main className="bg-base-100 text-base-content min-h-screen pb-15">
+      <Header theme={theme} setTheme={setTheme} />
+      <RenderHomePage />
     </main>
   )
 }
