@@ -1,58 +1,39 @@
-import { useEffect, useState } from "react"
-import type { ThemeProp } from "../types"
-
-import item1 from '../assets/item-1.jpeg'
+import { useEffect } from "react"
+import type { ProductProps } from "../types"
 
 import Header from "./Header"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
-const colors: {
-  id: number;
-  backgroundColor: string;
-  active: boolean
-}[] = [{
-  id: 1,
-  backgroundColor: 'rgb(255,69,0)',
-  active: true
-}, {
-  id: 2,
-  backgroundColor: 'rgb(50,205,50)',
-  active: false
-}, {
-  id: 3,
-  backgroundColor: 'rgb(30,144,255)',
-  active: false
-}, {
-  id: 4,
-  backgroundColor: 'rgb(255,20,147)',
-  active: false
-}, {
-  id: 5,
-  backgroundColor: 'rgb(255,215,0)',
-  active: false
-}]
 
-const Item = ({ theme, setTheme }: ThemeProp) => {
+const Item = ({ theme, setTheme, products }: ProductProps) => {
 
-  const [activeColor, setActiveColor] = useState<{
-  id: number;
-  backgroundColor: string;
-  active: boolean
-}[]>(colors)
+  const params = useParams<{ id: string }>()
+
+  const itemId = params.id!
+  console.log(itemId);
 
   useEffect(() => {
-    document.title = 'Item'
-  }, [])
+    document.title = `Item-${itemId}`
+  }, [itemId])
 
-  const toggleActive = (id: number) => setActiveColor(prev => 
-    prev.map(col => 
-      col.id === id ? {...col, active: true} : {...col, active: false}
-    )
-  )
+  if (!itemId) {
+    return <div>Invalid data ID</div>
+  }
+
+
+  const filteredItem = products.find(item => String(item.id) === itemId);
+
+  if (!filteredItem) {
+    return <div className="text-error">Product not found in current inventory catalog.</div>;
+  }
+
+
+  // const [activeColor, setActiveColor] = useState<string[]>(filteredItem.colors)
+
 
   return (
     <main>
-      <Header theme={theme} setTheme={setTheme} />
+      <Header theme={theme!} setTheme={setTheme!} />
       <section className="w-10/12 mx-auto py-5 rounded-md mt-10">
         <div>
           <Link to="/" className="hover:underline">Home</Link>
@@ -63,19 +44,19 @@ const Item = ({ theme, setTheme }: ThemeProp) => {
         {/* image and details */}
 
         <div className="flex flex-col md:flex-row gap-10 my-10">
-          <img src={item1} alt="item1" className="w-full md:w-1/2 h-96 object-cover rounded-md" />
+          <img src={filteredItem.image} alt={filteredItem.description} className="w-full md:w-1/2 h-96 object-cover rounded-md" />
           <div className="flex flex-col gap-5">
-            <h1 className="text-3xl font-semibold">Convertible Sleeper Sofa</h1>
-            <h2 className="text-xl text-base-300 font-semibold">Modenza</h2>
+            <h1 className="text-3xl font-semibold">{filteredItem.name}</h1>
+            <h2 className="text-xl text-base-300 font-semibold">{filteredItem.company}</h2>
             <p className="text-base-content text-2xl">$119.99</p>
-            <p>Cloud bread VHS hell of banjo bicycle rights jianbing umami mumblecore etsy 8-bit pok pok +1 wolf. Vexillologist yr dreamcatcher waistcoat, authentic chillwave trust fund. Viral typewriter fingerstache pinterest pork belly narwhal. Schlitz venmo everyday carry kitsch pitchfork chillwave iPhone taiyaki trust fund hashtag kinfolk microdosing gochujang live-edge.</p>
+            <p>{filteredItem.description}</p>
 
             <div>
               <h3 className="text-lg font-semibold">Colors</h3>
               <div className="flex items-center gap-3 mt-2">
 
-                {activeColor.map(col =>
-                  <button key={col.id} onClick={() => toggleActive(col.id)} type="button" className={`w-6 h-6 badge rounded-full cursor-pointer ${col.active && 'border-2 border-primary'}`} style={{ backgroundColor: col.backgroundColor }}></button>
+                {filteredItem.colors.map(col =>
+                  <button key={col} type="button" className={`w-6 h-6 badge rounded-full cursor-pointer ${col && 'border-2 border-primary'}`} style={{ backgroundColor: col }}></button>
                 )}
               </div>
             </div>

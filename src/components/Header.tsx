@@ -11,7 +11,7 @@ const Header = ({ theme, setTheme }: ThemeProp) => {
           <button className="hidden hover:bg-blue-700 hover:text-white cursor-pointer font-bold text-blue-500 border border-blue-500 py-0.5 px-2 rounded-lg text-[12px] sm:text-sm transition-all duration-500">
             LOGOUT
           </button>
-          <Link to="/signin" className="text-[12px] sm:text-[14px] text-gray-300 cursor-pointer hover:underline transition-all duration-500">
+          <Link to="/login" className="text-[12px] sm:text-[14px] text-gray-300 cursor-pointer hover:underline transition-all duration-500">
             Sign in/Guest
           </Link>
           <Link to="/register" className="text-[12px] sm:text-[14px] text-gray-300 cursor-pointer hover:underline transition-all duration-500">

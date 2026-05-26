@@ -2,18 +2,24 @@ import { CgMenu, CgMenuGridR } from "react-icons/cg"
 
 import ProductsGrid from "../../components/ProductsGrid"
 import { useState } from "react"
+import type { ProductProps } from "../../types"
 
-const Products = () => {
+const Products = ({ products, isLoading, isError, error }: ProductProps) => {
 
   const [gridForm, setGridForm] = useState<'col' | 'row'>('col')
 
   const activeIcon = (colRow: 'col' | 'row') => `${gridForm === colRow ? 'btn btn-sm p-1 btn-primary rounded-full' : 'btn btn-sm p-1 hover:bg-base-200 rounded-full bg-transparent'}`
 
+  
+
   return (
     <section className="w-10/12 mx-auto text-base-content pb-5">
       {/* Number of products and gid mode */}
       <div className="flex items-center justify-between">
-        <h1 className="font-bold">21 Products</h1>
+        <h1 className="font-bold">{products.length === 0 
+        ? 'No Product'
+        : products.length === 1 ? '1 Product'
+        : products.length + ' Products'}</h1>
         <div className="flex gap-3 items-center">
           <button onClick={() => setGridForm('col')} className={activeIcon('col')}>
             <CgMenuGridR className="text-2xl cursor-pointer" />
@@ -26,7 +32,13 @@ const Products = () => {
 
 
       {/*  Products grid */}
-      <ProductsGrid gridForm={gridForm} />
+      <ProductsGrid
+        products={products}
+        error={error}
+        isError={isError}
+        isLoading={isLoading}
+        gridForm={gridForm}
+      />
 
       {/* Change page */}
       <div className="text-base-content flex my-20 items-end justify-end">

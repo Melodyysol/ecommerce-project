@@ -4,9 +4,42 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import HomePage from './pages/homePage/HomePage'
 import AboutPage from './pages/AboutPage'
-import CartPage from './pages/CartPage'
+import CartPage from './pages/cart/CartPage'
 import ProductPage from './pages/productPage/ProductPage'
 import Item from './components/Item'
+import axios from 'axios'
+import { productSchemaArrary, type Products } from './types'
+import { useQuery } from '@tanstack/react-query'
+import Register from './pages/loginForm/Register'
+import Login from './pages/loginForm/Login'
+
+
+const fetchProducts = async (): Promise<Products[]> => {
+  try {
+    const response = await axios.get('/api/react-store-products')
+    // if (!response) throw new Error("Error in fetching data");
+    console.log(response.data)
+
+    const validatingProducts = productSchemaArrary.safeParse(response.data);
+
+    if (!validatingProducts.success) {
+      throw new Error(validatingProducts.error.message);
+    }
+    return validatingProducts.data
+
+  } catch (error) {
+    console.error(error);
+
+    if (error instanceof Error) {
+      throw error; // rethrow original error
+    }
+
+    throw new Error('Unknown error occurred', {
+      cause: error
+    });
+
+  }
+}
 
 function App() {
   const [theme, setTheme] = useState<'winter' | 'dracula'>(() => {
@@ -20,10 +53,25 @@ function App() {
     window.localStorage.setItem('theme', theme)
   }, [theme])
 
+
+  const {
+    data: products = [],
+    error,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ['product'],
+    queryFn: fetchProducts
+  })
+
   return (
     <Routes>
       <Route index element={<HomePage
         theme={theme} setTheme={setTheme}
+        products={products}
+        error={error}
+        isError={isError}
+        isLoading={isLoading}
       />} />
       <Route path='/about' element={<AboutPage
         theme={theme} setTheme={setTheme}
@@ -33,10 +81,20 @@ function App() {
       />} />
       <Route path='/products' element={<ProductPage
         theme={theme} setTheme={setTheme}
+        products={products}
+        error={error}
+        isError={isError}
+        isLoading={isLoading}
       />} />
-      <Route path='/item/1' element={<Item
+      <Route path='/item/:id' element={<Item
         theme={theme} setTheme={setTheme}
+        products={products}
+        error={error}
+        isError={isError}
+        isLoading={isLoading}
       />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
     </Routes>
   )
 }

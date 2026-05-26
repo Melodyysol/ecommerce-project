@@ -17,6 +17,25 @@
 //   labelName: 'search',
 //   inputType: 'search'
 // }]
+
+const companies = [
+  'all',
+  'ikea',
+  'marcos',
+  'liddy',
+  'caressa'
+]
+
+const categories = [
+  'all',
+  'office',
+  'living room',
+  'kitchen',
+  'bedroom',
+  'dining',
+  'kids'
+]
+
 const FormGrid = () => {
 
 
@@ -34,13 +53,11 @@ const FormGrid = () => {
           <label htmlFor="category">
             <span className="capitalize text-sm">Select Category</span>
           </label>
-          <select name="category" id="category" className="select select-sm cursor-pointer mt-2">
-            <option value="all">all</option>
-            <option value="Beds">Beds</option>
-            <option value="Sovas">Sovas</option>
-            <option value="Chairs">Chairs</option>
-            <option value="Tables">Tables</option>
-            <option value="Kids">Kids</option>
+          <select name="category" id="category" className="select select-sm cursor-pointer mt-2 capitalize">
+            {categories.map(category =>
+              <option key={category} value={category}>{category}</option>
+            )}
+
           </select>
         </div>
 
@@ -48,13 +65,10 @@ const FormGrid = () => {
           <label htmlFor="company">
             <span className="capitalize text-sm">search company</span>
           </label>
-          <select name="company" id="company" className="select select-sm cursor-pointer mt-2">
-            <option value="all">all</option>
-            <option value="Artifex">Artifex</option>
-            <option value="Luxora">Luxora</option>
-            <option value="Comfora">Comfora</option>
-            <option value="Modenza">Modenza</option>
-            <option value="Homestead">Homestead</option>
+          <select name="company" id="company" className="select select-sm cursor-pointer mt-2 capitalize">
+            {companies.map(company =>
+              <option key={company} value={company}>{company}</option>
+            )}
           </select>
         </div>
 
