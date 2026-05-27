@@ -8,7 +8,7 @@ import CartPage from './pages/cart/CartPage'
 import ProductPage from './pages/productPage/ProductPage'
 import Item from './components/Item'
 import axios from 'axios'
-import { productSchemaArrary, type Products } from './types'
+import { productSchemaArrary, type Cart, type Products } from './types'
 import { useQuery } from '@tanstack/react-query'
 import Register from './pages/loginForm/Register'
 import Login from './pages/loginForm/Login'
@@ -47,6 +47,10 @@ function App() {
     const storedTheme = window.localStorage.getItem('theme')
     return storedTheme === 'dracula' ? 'dracula' : 'winter'
   })
+  const [carts, setCart] = useState<Cart[]>([])
+  const [quantity, setQuantity] = useState<number>(1)
+
+
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -68,6 +72,7 @@ function App() {
     <Routes>
       <Route index element={<HomePage
         theme={theme} setTheme={setTheme}
+        carts={carts}
         products={products}
         error={error}
         isError={isError}
@@ -75,12 +80,15 @@ function App() {
       />} />
       <Route path='/about' element={<AboutPage
         theme={theme} setTheme={setTheme}
+        carts={carts}
       />} />
       <Route path='/cart' element={<CartPage
         theme={theme} setTheme={setTheme}
+        carts={carts} setCart={setCart}
       />} />
       <Route path='/products' element={<ProductPage
         theme={theme} setTheme={setTheme}
+        carts={carts}
         products={products}
         error={error}
         isError={isError}
@@ -88,6 +96,8 @@ function App() {
       />} />
       <Route path='/item/:id' element={<Item
         theme={theme} setTheme={setTheme}
+        carts={carts} setCart={setCart}
+        quantity={quantity} setQuantity={setQuantity!}
         products={products}
         error={error}
         isError={isError}

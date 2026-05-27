@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import NavBar from "./NavBar"
 import type { ThemeProp } from "../types";
 
-const Header = ({ theme, setTheme }: ThemeProp) => {
+const Header = ({ theme, setTheme, carts }: ThemeProp) => {
   return (
     <>
       <header className="bg-neutral text-neutral-content p-2 flex">
@@ -19,7 +19,7 @@ const Header = ({ theme, setTheme }: ThemeProp) => {
           </Link>
         </div>
       </header>
-      <NavBar theme={theme} setTheme={setTheme} />
+      <NavBar theme={theme} setTheme={setTheme} carts={carts} />
     </>
   )
 }

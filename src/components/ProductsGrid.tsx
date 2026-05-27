@@ -12,7 +12,7 @@ const ProductsGrid = ({ products, isError, isLoading, error, gridForm }: Product
     <div className={`grid ${gridForm === 'col' && 'sm:grid-cols-2 md:grid-cols-3'} gap-5 items-center mt-15`}>
 
       {isLoading 
-      ?<p className='text-2xl text-center'>Loading...</p>  
+      ?<p className='text-2xl text-center animate-pulse'>Loading...</p>  
       : products.map(product =>
         <Link key={product.id} to={`/item/${product.id}`} className={`bg-base-100 shadow hover:shadow-2xl rounded-2xl p-4 pb-6 ${gridForm === 'row' && 'grid md:grid-cols-[150px_1fr] gap-y-3 gap-x-6 items-start'}`}>
           <img src={product.image} alt={product.description} className={`${gridForm === 'row' ? 'h-30 w-30 md:w-40 md:h-35' : 'h-64 md:h-48 w-full'} object-cover rounded-xl`} />

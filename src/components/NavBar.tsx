@@ -6,8 +6,10 @@ import { RiMenu3Fill } from "react-icons/ri"
 import { Link, NavLink } from "react-router-dom"
 import type { ThemeProp } from "../types"
 
-const NavBar = ({ theme, setTheme }: ThemeProp) => {
+const NavBar = ({ theme, setTheme, carts }: ThemeProp) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
+
+  let totalQuantity = 0
 
   useEffect(() => {
     const handleClick = () => setShowMenu(false);
@@ -18,6 +20,10 @@ const NavBar = ({ theme, setTheme }: ThemeProp) => {
       window.removeEventListener('click', handleClick);
     };
   }, []);
+
+  carts.forEach(cart => {
+    totalQuantity = totalQuantity + cart.quantity
+  })
 
   const activeLink = (({ isActive }: { isActive: boolean; }) => isActive ? `bg-neutral text-neutral-content rounded-lg px-3 py-1 md:px-4 md:py-2 text-sm w-full block` : `text-base-content hover:bg-base-200 md:hover:bg-base-300 rounded-lg px-3 py-1 text-sm md:px-4 md:py-2 transition-all duration-500 w-full block`)
 
@@ -55,7 +61,7 @@ const NavBar = ({ theme, setTheme }: ThemeProp) => {
               <BsCart3 />
             </div>
 
-            <div className="absolute -top-1.5 -right-1.5 badge badge-sm badge-primary">0</div>
+            <div className="absolute -top-1.5 -right-1.5 badge badge-sm badge-primary">{totalQuantity}</div>
           </Link>
         </div>
       </div>

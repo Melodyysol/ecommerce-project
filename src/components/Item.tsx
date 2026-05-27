@@ -1,16 +1,18 @@
-import { useEffect } from "react"
-import type { ProductProps } from "../types"
+import { useEffect, useState } from "react"
+import type { Cart, ProductProps } from "../types"
 
 import Header from "./Header"
 import { Link, useParams } from "react-router-dom"
 
 
-const Item = ({ theme, setTheme, products }: ProductProps) => {
+const Item = ({ theme, setTheme, products, carts, setCart, setQuantity, quantity }: ProductProps) => {
+  const [activeColor, setActiveColor] = useState<string>('')
 
   const params = useParams<{ id: string }>()
 
   const itemId = params.id!
   console.log(itemId);
+
 
   useEffect(() => {
     document.title = `Item-${itemId}`
@@ -22,18 +24,31 @@ const Item = ({ theme, setTheme, products }: ProductProps) => {
 
 
   const filteredItem = products.find(item => String(item.id) === itemId);
-
   if (!filteredItem) {
-    return <div className="text-error">Product not found in current inventory catalog.</div>;
+    return <div className="w-screen h-screen flex">
+      <p className="text-center m-auto text-3xl font-bold animate-pulse">Loading...</p>
+    </div>
   }
 
 
-  // const [activeColor, setActiveColor] = useState<string[]>(filteredItem.colors)
-
+  const addToBag = () => {
+    const newCart: Cart = {
+      id: filteredItem.id,
+      name: filteredItem.name,
+      image: filteredItem.image,
+      color: activeColor,
+      company: filteredItem.company,
+      price: filteredItem.price,
+      quantity: quantity,
+    }
+    setCart(prev =>
+      [...prev, newCart]
+    )
+  }
 
   return (
     <main>
-      <Header theme={theme!} setTheme={setTheme!} />
+      <Header theme={theme!} setTheme={setTheme!} carts={carts!} />
       <section className="w-10/12 mx-auto py-5 rounded-md mt-10">
         <div>
           <Link to="/" className="hover:underline">Home</Link>
@@ -56,14 +71,19 @@ const Item = ({ theme, setTheme, products }: ProductProps) => {
               <div className="flex items-center gap-3 mt-2">
 
                 {filteredItem.colors.map(col =>
-                  <button key={col} type="button" className={`w-6 h-6 badge rounded-full cursor-pointer ${col && 'border-2 border-primary'}`} style={{ backgroundColor: col }}></button>
+                  <button key={col}
+                    onClick={() => setActiveColor(col)}
+                    type="button" className={`w-6 h-6 badge rounded-full cursor-pointer ${activeColor === col && 'border-2 border-primary'}`} style={{ backgroundColor: col }}></button>
                 )}
               </div>
             </div>
 
             <div>
               <label className="block">Amount</label>
-              <select name="quntity" id="quantity" className="select select-lg select-secondary cursor-pointer mt-2">
+              <select
+                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                value={quantity}
+                name="quntity" id="quantity" className="select select-lg select-secondary cursor-pointer mt-2">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -87,7 +107,7 @@ const Item = ({ theme, setTheme, products }: ProductProps) => {
               </select>
             </div>
 
-            <button className="btn btn-secondary btn-lg w-max my-5 uppercase">Add to Bag</button>
+            <button onClick={addToBag} className="btn btn-secondary btn-lg w-max my-5 uppercase">Add to Bag</button>
           </div>
         </div>
       </section>

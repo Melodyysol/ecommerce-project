@@ -19,7 +19,10 @@ export type ThemeName = 'winter' | 'dracula'
 
 export type ThemeProp = {
   theme: ThemeName;
-  setTheme: (theme: ThemeName) => void
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  setCart?: (cart:Cart) => void;
+  setQuantity?: (quantity: number) => void
 }
 
 export type ProductProps = {
@@ -30,10 +33,24 @@ export type ProductProps = {
   theme?: ThemeName;
   setTheme?: (theme: ThemeName) => void;
   gridForm?: 'col' | 'row';
+  carts?: Cart[];
+  setCart?: (cart: Cart) => void;
+  setQuantity?: (quantity: number) => void
+  quantity?: number
 }
 
 export type Forms = {
   name: string;
   labelName: string;
   inputType: string;
+}
+
+export type Cart = {
+  id: string;
+  name: string;
+  image: string;
+  color: string;
+  company: string;
+  price: number;
+  quantity: number
 }

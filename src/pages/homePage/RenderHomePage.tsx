@@ -8,7 +8,7 @@ const RenderHomePage = ({ products, isError, isLoading, error }: ProductProps) =
 
   if (isLoading) {
     return <div className="w-screen h-screen flex">
-      <p className="text-center m-auto text-3xl font-bold">Loading...</p>
+      <p className="text-center m-auto text-3xl font-bold animate-pulse">Loading...</p>
     </div>
   } else if (isError) {
     return <div className="w-screen h-screen flex">
