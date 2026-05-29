@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react"
-import type { Cart, ProductProps } from "../types"
+import type { Cart, ItemPageProp } from "../types"
 
 import Header from "./Header"
 import { Link, useParams } from "react-router-dom"
 
 
-const Item = ({ theme, setTheme, products, carts, setCart, setQuantity, quantity }: ProductProps) => {
+const Item = ({ theme, setTheme, products, carts, setCart, setQuantity, quantity }: ItemPageProp) => {
   const [activeColor, setActiveColor] = useState<string>('')
 
   const params = useParams<{ id: string }>()
 
   const itemId = params.id!
-  console.log(itemId);
 
 
   useEffect(() => {
@@ -44,6 +43,7 @@ const Item = ({ theme, setTheme, products, carts, setCart, setQuantity, quantity
     setCart(prev =>
       [...prev, newCart]
     )
+    localStorage.setItem(JSON.stringify(carts), 'cart')
   }
 
   return (

@@ -2,9 +2,9 @@ import { CgMenu, CgMenuGridR } from "react-icons/cg"
 
 import ProductsGrid from "../../components/ProductsGrid"
 import { useState } from "react"
-import type { ProductProps } from "../../types"
+import type { ProductsProp } from "../../types"
 
-const Products = ({ products, isLoading, isError, error }: ProductProps) => {
+const Products = ({ products, isLoading, isError, error }: ProductsProp) => {
 
   const [gridForm, setGridForm] = useState<'col' | 'row'>('col')
 

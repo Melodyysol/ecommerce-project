@@ -1,10 +1,10 @@
 // import projects from "../../data/projects"
 import { Link } from 'react-router-dom'
 import ProductsGrid from '../../components/ProductsGrid'
-import type { ProductProps } from '../../types'
+import type { ProductsProp } from '../../types'
 
 
-const RenderHomePage = ({ products, isError, isLoading, error }: ProductProps) => {
+const RenderHomePage = ({ products, isError, isLoading, error }: ProductsProp) => {
 
   if (isLoading) {
     return <div className="w-screen h-screen flex">
@@ -30,7 +30,7 @@ const RenderHomePage = ({ products, isError, isLoading, error }: ProductProps) =
         </div>
 
         <div className='hidden md:flex bg-neutral w-400 h-120 p-4 rounded-2xl overflow-scroll gap-5'>
-          {products.filter((_, i) => i <= 4).map(product =>
+          {products.filter((_, i) => i <= 3).map(product =>
             <img key={product.id} src={product.image} alt={product.description} className='rounded-2xl h-full object-cover w-[20rem]' />
           )}
         </div>

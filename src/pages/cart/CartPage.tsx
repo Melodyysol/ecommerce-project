@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 
 import Header from "../../components/Header"
-import type { ThemeProp } from "../../types"
+import type { CartPageProp } from "../../types"
 import CartItem from "./CartItem"
 import PaymentSummary from "./PaymentSummary"
 
-const CartPage = ({ theme, setTheme, carts, setCart, setQuantity }: ThemeProp) => {
+const CartPage = ({ theme, setTheme, carts, setCart, setQuantity }: CartPageProp) => {
 
   useEffect(() => {
     document.title = 'Cart'
@@ -21,7 +21,7 @@ const CartPage = ({ theme, setTheme, carts, setCart, setQuantity }: ThemeProp) =
         </div>
       </section>
       <section className="lg:w-10/12 lg:mx-auto lg:grid lg:item-start lg:grid-cols-[1fr_24rem] lg:justify-between">
-        <CartItem carts={carts} setCart={setCart!} setQuantity={setQuantity!} />
+        <CartItem carts={carts} setCart={setCart} setQuantity={setQuantity} />
         <PaymentSummary />
       </section>
 

@@ -7,7 +7,7 @@ const Register = () => {
 
   return (
     <section className="w-screen h-screen flex">
-      <Form />
+      <Form user="register" />
     </section>
   )
 }

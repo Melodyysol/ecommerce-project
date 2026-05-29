@@ -9,7 +9,7 @@ const Login = () => {
 
   return (
     <section className="w-screen h-screen flex">
-      <Form />
+      <Form user="login" />
     </section>
   )
 }

@@ -17,28 +17,6 @@ export type Products = z.infer<typeof productSchema>
 
 export type ThemeName = 'winter' | 'dracula'
 
-export type ThemeProp = {
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
-  setCart?: (cart:Cart) => void;
-  setQuantity?: (quantity: number) => void
-}
-
-export type ProductProps = {
-  products: Products[];
-  isError: boolean;
-  error: Error | null;
-  isLoading: boolean;
-  theme?: ThemeName;
-  setTheme?: (theme: ThemeName) => void;
-  gridForm?: 'col' | 'row';
-  carts?: Cart[];
-  setCart?: (cart: Cart) => void;
-  setQuantity?: (quantity: number) => void
-  quantity?: number
-}
-
 export type Forms = {
   name: string;
   labelName: string;
@@ -54,3 +32,67 @@ export type Cart = {
   price: number;
   quantity: number
 }
+
+export type ThemeProp = {
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  setCart?: (cart: Cart) => void;
+  setQuantity?: (quantity: number) => void
+}
+
+export type HomePageProp = {
+  products: Products[];
+  isError: boolean;
+  error: Error | null;
+  isLoading: boolean;
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+}
+
+export type CartPageProp = {
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
+  setQuantity: (quantity: number) => void;
+}
+
+export type ItemPageProp = {
+  products: Products[];
+  isError: boolean;
+  error: Error | null;
+  isLoading: boolean;
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
+  setQuantity: (quantity: number) => void
+  quantity: number
+}
+
+export type ProductsGridProp = {
+  products: Products[];
+  isError: boolean;
+  error: Error | null;
+  isLoading: boolean;
+  gridForm: 'col' | 'row'
+}
+
+export type ProductsProp = {
+  products: Products[];
+  isError: boolean;
+  error: Error | null;
+  isLoading: boolean;
+}
+
+export type FormGridData = {
+  search: string;
+  categoryRef: string;
+  order: string;
+  companyRef: string;
+  range: string;
+  shipping: string
+}
+

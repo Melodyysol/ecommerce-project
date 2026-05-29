@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
-import type { ProductProps } from '../types'
+import type { ProductsGridProp } from '../types'
+import { formatCurrency } from '../utilitis/money'
 
 
-const ProductsGrid = ({ products, isError, isLoading, error, gridForm }: ProductProps) => {
+const ProductsGrid = ({ products, isError, isLoading, error, gridForm }: ProductsGridProp) => {
 
   if(isError) {
     return <p className='text-2xl text-center mt-5'>{error?.message}</p>
@@ -23,7 +24,7 @@ const ProductsGrid = ({ products, isError, isLoading, error, gridForm }: Product
 
               {gridForm === 'row' && <h2 className='text-base-300'>{product.company}</h2>}
             </div>
-            <span className={`${gridForm === 'row' ? 'text-base-content font-semibold' : 'text-primary'}`}>${product.price}</span>
+            <span className={`${gridForm === 'row' ? 'text-base-content font-semibold' : 'text-primary'}`}>{formatCurrency(product.price)}</span>
           </div>
         </Link>
       )}

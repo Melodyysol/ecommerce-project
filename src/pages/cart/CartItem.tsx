@@ -1,5 +1,5 @@
 import type { Cart } from '../../types'
-const CartItem = ({ carts, setCart, setQuantity }: { carts: Cart[], setCart: (cart: Cart) => void, setQuantity: (quantity: number) => void }) => {
+const CartItem = ({ carts, setCart, setQuantity }: { carts: Cart[], setCart: React.Dispatch<React.SetStateAction<Cart[]>>, setQuantity: (quantity: number) => void }) => {
 
   const removeCart = (id: string) => {
     setCart(prev =>

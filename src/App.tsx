@@ -18,7 +18,6 @@ const fetchProducts = async (): Promise<Products[]> => {
   try {
     const response = await axios.get('/api/react-store-products')
     // if (!response) throw new Error("Error in fetching data");
-    console.log(response.data)
 
     const validatingProducts = productSchemaArrary.safeParse(response.data);
 
@@ -28,8 +27,6 @@ const fetchProducts = async (): Promise<Products[]> => {
     return validatingProducts.data
 
   } catch (error) {
-    console.error(error);
-
     if (error instanceof Error) {
       throw error; // rethrow original error
     }
@@ -47,7 +44,10 @@ function App() {
     const storedTheme = window.localStorage.getItem('theme')
     return storedTheme === 'dracula' ? 'dracula' : 'winter'
   })
-  const [carts, setCart] = useState<Cart[]>([])
+  const [carts, setCart] = useState<Cart[]>(() => {
+    const savedCarts = localStorage.getItem('cart')
+    return savedCarts ? JSON.parse(savedCarts) : []
+  })
   const [quantity, setQuantity] = useState<number>(1)
 
 
@@ -68,6 +68,8 @@ function App() {
     queryFn: fetchProducts
   })
 
+  
+
   return (
     <Routes>
       <Route index element={<HomePage
@@ -85,6 +87,7 @@ function App() {
       <Route path='/cart' element={<CartPage
         theme={theme} setTheme={setTheme}
         carts={carts} setCart={setCart}
+        setQuantity={setQuantity}
       />} />
       <Route path='/products' element={<ProductPage
         theme={theme} setTheme={setTheme}

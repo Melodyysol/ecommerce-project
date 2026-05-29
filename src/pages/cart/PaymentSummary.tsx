@@ -24,7 +24,7 @@ const PaymentSummary = () => {
         </p>
       </div>
 
-      <button className="btn btn-primary btn-lg">please login</button>
+      <button className="btn btn-primary btn-md uppercase">please login</button>
     </div>
   )
 }
