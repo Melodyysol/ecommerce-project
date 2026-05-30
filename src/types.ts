@@ -56,7 +56,6 @@ export type CartPageProp = {
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
   setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
-  setQuantity: (quantity: number) => void;
 }
 
 export type ItemPageProp = {
@@ -67,7 +66,7 @@ export type ItemPageProp = {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
-  setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
+  addToBag: (filteredItem: Products, activeColor: string) => void;
   setQuantity: (quantity: number) => void
   quantity: number
 }

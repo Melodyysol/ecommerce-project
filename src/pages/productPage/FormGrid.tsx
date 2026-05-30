@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react"
 import type { FormGridData } from "../../types"
+import { formatCurrency } from "../../utilitis/money"
 
 // const forms: Forms = [{
 //   name: 'search',
@@ -50,7 +51,7 @@ const FormGrid = ({setSubmitedData}: {setSubmitedData: (sub: FormGridData) => vo
 
   
 
-  const [rangeInput, setRangeInput] = useState<string>('')
+  const [rangeInput, setRangeInput] = useState<number>(5000)
 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,9 +71,9 @@ const FormGrid = ({setSubmitedData}: {setSubmitedData: (sub: FormGridData) => vo
       companyRef: companyValue,
       range: rangeValue,
       shipping: shippingValue,
-    })
+    })    
 
-  }
+  }  
 
 
   return (
@@ -131,15 +132,15 @@ const FormGrid = ({setSubmitedData}: {setSubmitedData: (sub: FormGridData) => vo
         <div>
           <label htmlFor="price" className="flex items-center justify-between">
             <span className="capitalize text-sm">select price</span>
-            <span>${rangeInput}</span>
+            <span>{formatCurrency(rangeInput * 100)}</span>
           </label>
           <input
             ref={range}
-            onChange={e => setRangeInput(e.target.value)}
-            type="range" name="price" className=" range range-primary range-sm mt-2" min={0} max={100000} step={1000} value={rangeInput} />
+            onChange={e => setRangeInput(Number(e.target.value))}
+            type="range" name="price" className=" range range-primary range-sm mt-2" min={0} max={5000} step={100} value={rangeInput} />
           <div className="font-bold text-sm flex items-center justify-between">
             <span>0</span>
-            <span>Max: $1,000.00</span>
+            <span>Max: {formatCurrency(500000)}</span>
           </div>
         </div>
 

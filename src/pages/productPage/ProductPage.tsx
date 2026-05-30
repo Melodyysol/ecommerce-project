@@ -39,11 +39,16 @@ const ProductPage = ({
       product.company === submitedData.companyRef;
 
     // 4. Numeric range check
-    const matchesPrice = product.price <= Number(submitedData.range);
+    const matchesPrice = product.price <= (Number(submitedData.range) * 100);
 
     // Return true only if ALL conditions pass
-    return matchesSearch && matchesCategory && matchesCompany && matchesPrice;
+    return (
+      (matchesSearch && matchesCategory && matchesCompany && matchesPrice) ||
+      (matchesSearch && matchesPrice)
+    );
   });
+
+  console.log(submitedData);
 
   // let orderedProducts = [...filteredProducts]
 

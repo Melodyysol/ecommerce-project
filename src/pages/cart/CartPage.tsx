@@ -5,7 +5,7 @@ import type { CartPageProp } from "../../types"
 import CartItem from "./CartItem"
 import PaymentSummary from "./PaymentSummary"
 
-const CartPage = ({ theme, setTheme, carts, setCart, setQuantity }: CartPageProp) => {
+const CartPage = ({ theme, setTheme, carts, setCart }: CartPageProp) => {
 
   useEffect(() => {
     document.title = 'Cart'
@@ -21,7 +21,7 @@ const CartPage = ({ theme, setTheme, carts, setCart, setQuantity }: CartPageProp
         </div>
       </section>
       <section className="lg:w-10/12 lg:mx-auto lg:grid lg:item-start lg:grid-cols-[1fr_24rem] lg:justify-between">
-        <CartItem carts={carts} setCart={setCart} setQuantity={setQuantity} />
+        <CartItem carts={carts} setCart={setCart} />
         <PaymentSummary />
       </section>
 
