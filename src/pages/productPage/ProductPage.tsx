@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import FormGrid from "./FormGrid";
-import Products from "./Products";
-import type { FormGridData, HomePageProp } from "../../types";
+import  Products from "./Products";
+import type { FormGridData, ProductPageProps } from "../../types";
 
 const ProductPage = ({
   theme,
@@ -12,14 +12,14 @@ const ProductPage = ({
   isError,
   error,
   carts,
-}: HomePageProp) => {
+  setIsShipping
+}: ProductPageProps) => {
   const [submitedData, setSubmitedData] = useState<FormGridData>({
     search: "",
     categoryRef: "",
     order: "",
     companyRef: "",
     range: "",
-    shipping: "",
   });
 
   const filteredProducts = products.filter((product) => {
@@ -86,7 +86,7 @@ const ProductPage = ({
         </div>
       ) : (
         <>
-          <FormGrid setSubmitedData={setSubmitedData} />
+          <FormGrid setSubmitedData={setSubmitedData} setIsShipping={setIsShipping} />
           <Products
             products={submitedData.search === "" ? products : filteredProducts}
             error={error}

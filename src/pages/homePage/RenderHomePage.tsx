@@ -30,7 +30,7 @@ const RenderHomePage = ({ products, isError, isLoading, error }: ProductsProp) =
         </div>
 
         <div className='hidden md:flex bg-neutral w-400 h-120 p-4 rounded-2xl overflow-scroll gap-5'>
-          {products.filter((_, i) => i <= 3).map(product =>
+          {products.slice(0, 4).map(product =>
             <img key={product.id} src={product.image} alt={product.description} className='rounded-2xl h-full object-cover w-[20rem]' />
           )}
         </div>

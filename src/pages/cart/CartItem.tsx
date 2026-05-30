@@ -1,5 +1,6 @@
 import type { Cart } from "../../types";
 import { formatCurrency } from "../../utilitis/money";
+
 const CartItem = ({
   carts,
   setCart,
@@ -57,7 +58,11 @@ const CartItem = ({
             <label htmlFor="amount">Amount</label>
             <select
               onChange={(e) =>
-                updateCartQuantity(cart.id, cart.color, parseInt(e.target.value))
+                updateCartQuantity(
+                  cart.id,
+                  cart.color,
+                  parseInt(e.target.value),
+                )
               }
               value={cart.quantity}
               name="amount"
@@ -78,7 +83,9 @@ const CartItem = ({
             </button>
           </div>
 
-          <p className="font-medium md:text-end">{formatCurrency(cart.price * cart.quantity)}</p>
+          <p className="font-medium md:text-end">
+            {formatCurrency(cart.price * cart.quantity)}
+          </p>
         </article>
       ))}
     </div>

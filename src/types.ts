@@ -51,11 +51,23 @@ export type HomePageProp = {
   carts: Cart[];
 }
 
+export type ProductPageProps = {
+  products: Products[];
+  isError: boolean;
+  error: Error | null;
+  isLoading: boolean;
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  setIsShipping: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export type CartPageProp = {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
   setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
+  isShipping: boolean;
 }
 
 export type ItemPageProp = {
@@ -92,6 +104,5 @@ export type FormGridData = {
   order: string;
   companyRef: string;
   range: string;
-  shipping: string
 }
 

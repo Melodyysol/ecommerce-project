@@ -46,6 +46,8 @@ function App() {
     return savedCarts ? JSON.parse(savedCarts) : [];
   });
 
+  const [isShipping, setIsShipping] = useState<boolean>(false);
+
   const addToBag = (filteredItem: Products, activeColor: string) => {
     const newCart: Cart = {
       id: filteredItem.id,
@@ -65,11 +67,11 @@ function App() {
         return prev.map((item) =>
           item.id === newCart.id && item.color === newCart.color
             ? { ...item, quantity: item.quantity + newCart.quantity }
-            : item
+            : item,
         );
       }
 
-      return [...prev, newCart]
+      return [...prev, newCart];
     });
   };
 
@@ -122,6 +124,7 @@ function App() {
             setTheme={setTheme}
             carts={carts}
             setCart={setCart}
+            isShipping={isShipping}
           />
         }
       />
@@ -136,6 +139,7 @@ function App() {
             error={error}
             isError={isError}
             isLoading={isLoading}
+            setIsShipping={setIsShipping}
           />
         }
       />
