@@ -9,19 +9,19 @@ const productSchema = z.object({
   description: z.string(),
   category: z.string(),
   price: z.number(),
-})
+});
 
-export const productSchemaArrary = z.array(productSchema)
+export const productSchemaArrary = z.array(productSchema);
 
-export type Products = z.infer<typeof productSchema>
+export type Products = z.infer<typeof productSchema>;
 
-export type ThemeName = 'winter' | 'dracula'
+export type ThemeName = "winter" | "dracula";
 
 export type Forms = {
   name: string;
   labelName: string;
   inputType: string;
-}
+};
 
 export type Cart = {
   id: string;
@@ -30,18 +30,32 @@ export type Cart = {
   color: string;
   company: string;
   price: number;
-  quantity: number
-}
+  quantity: number;
+};
 
-export type ThemeProp = {
+export type NavBarProps = {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
-  setCart?: (cart: Cart) => void;
-  setQuantity?: (quantity: number) => void
-}
+};
 
-export type HomePageProp = {
+export type AboutPageProps = {
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  currentUser: string | null;
+  setCurrentUser: (user: string | null) => void;
+};
+
+export type HeaderProps = {
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  currentUser: string | null;
+  setCurrentUser: (user: string | null) => void;
+};
+
+export type HomePageProps = {
   products: Products[];
   isError: boolean;
   error: Error | null;
@@ -49,7 +63,9 @@ export type HomePageProp = {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
-}
+  currentUser: string | null;
+  setCurrentUser: (user: string | null) => void;
+};
 
 export type ProductPageProps = {
   products: Products[];
@@ -60,15 +76,19 @@ export type ProductPageProps = {
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
   setIsShipping: React.Dispatch<React.SetStateAction<boolean>>;
-}
+  currentUser: string | null;
+  setCurrentUser: (user: string | null) => void;
+};
 
-export type CartPageProp = {
+export type CartPageProps = {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
   setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
   isShipping: boolean;
-}
+  currentUser: string | null;
+  setCurrentUser: (user: string | null) => void;
+};
 
 export type ItemPageProp = {
   products: Products[];
@@ -79,24 +99,26 @@ export type ItemPageProp = {
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
   addToBag: (filteredItem: Products, activeColor: string) => void;
-  setQuantity: (quantity: number) => void
-  quantity: number
-}
+  setQuantity: (quantity: number) => void;
+  quantity: number;
+  currentUser: string | null;
+  setCurrentUser: (user: string | null) => void;
+};
 
 export type ProductsGridProp = {
   products: Products[];
   isError: boolean;
   error: Error | null;
   isLoading: boolean;
-  gridForm: 'col' | 'row'
-}
+  gridForm: "col" | "row";
+};
 
 export type ProductsProp = {
   products: Products[];
   isError: boolean;
   error: Error | null;
   isLoading: boolean;
-}
+};
 
 export type FormGridData = {
   search: string;
@@ -104,5 +126,6 @@ export type FormGridData = {
   order: string;
   companyRef: string;
   range: string;
-}
+};
 
+export type FormData = { username?: string; email: string; password: string };

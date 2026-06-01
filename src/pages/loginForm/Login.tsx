@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import Form from "./Form"
 
-const Login = () => {
+const Login = ({ setCurrentUser }: { setCurrentUser: (user: string | null) => void }) => {
 
   useEffect(() => {
     document.title = 'Login'
@@ -9,7 +9,7 @@ const Login = () => {
 
   return (
     <section className="w-screen h-screen flex">
-      <Form user="login" />
+      <Form user="login" setCurrentUser={setCurrentUser} />
     </section>
   )
 }

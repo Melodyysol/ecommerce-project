@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import FormGrid from "./FormGrid";
-import  Products from "./Products";
+import RenderProducts from "./RenderProducts";
 import type { FormGridData, ProductPageProps } from "../../types";
 
 const ProductPage = ({
@@ -12,7 +12,9 @@ const ProductPage = ({
   isError,
   error,
   carts,
-  setIsShipping
+  setIsShipping,
+  currentUser,
+  setCurrentUser,
 }: ProductPageProps) => {
   const [submitedData, setSubmitedData] = useState<FormGridData>({
     search: "",
@@ -39,7 +41,7 @@ const ProductPage = ({
       product.company === submitedData.companyRef;
 
     // 4. Numeric range check
-    const matchesPrice = product.price <= (Number(submitedData.range) * 100);
+    const matchesPrice = product.price <= Number(submitedData.range) * 100;
 
     // Return true only if ALL conditions pass
     return (
@@ -68,7 +70,13 @@ const ProductPage = ({
 
   return (
     <main>
-      <Header theme={theme!} setTheme={setTheme!} carts={carts!} />
+      <Header
+        theme={theme!}
+        setTheme={setTheme!}
+        carts={carts!}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+      />
       {isError ? (
         <div className="w-screen h-screen flex">
           <div className="m-auto flex flex-col items-center gap-5 w-4/5">
@@ -86,8 +94,11 @@ const ProductPage = ({
         </div>
       ) : (
         <>
-          <FormGrid setSubmitedData={setSubmitedData} setIsShipping={setIsShipping} />
-          <Products
+          <FormGrid
+            setSubmitedData={setSubmitedData}
+            setIsShipping={setIsShipping}
+          />
+          <RenderProducts
             products={submitedData.search === "" ? products : filteredProducts}
             error={error}
             isError={isError}

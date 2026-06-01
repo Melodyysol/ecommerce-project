@@ -12,6 +12,8 @@ const Item = ({
   addToBag,
   setQuantity,
   quantity,
+  currentUser,
+  setCurrentUser,
 }: ItemPageProp) => {
   const params = useParams<{ id: string }>();
 
@@ -23,7 +25,7 @@ const Item = ({
     if (filteredItem && filteredItem.colors && filteredItem.colors.length > 0) {
       return filteredItem.colors[0];
     }
-    return '';
+    return "";
   });
 
   useEffect(() => {
@@ -50,7 +52,13 @@ const Item = ({
 
   return (
     <main>
-      <Header theme={theme!} setTheme={setTheme!} carts={carts!} />
+      <Header
+        theme={theme}
+        setTheme={setTheme!}
+        carts={carts}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+      />
       <section className="w-10/12 mx-auto py-5 rounded-md mt-10">
         <div>
           <Link to="/" className="hover:underline">

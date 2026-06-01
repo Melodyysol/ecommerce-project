@@ -2,7 +2,7 @@ import { CgMenu, CgMenuGridR } from "react-icons/cg";
 
 import ProductsGrid from "../../components/ProductsGrid";
 import { useEffect, useReducer, useState } from "react";
-import { type Products, type ProductsProp } from "../../types";
+import type { ProductsProp } from "../../types";
 
 const pageButton: ("1" | "2" | "3" | "next" | "prev")[] = [
   "prev",
@@ -12,60 +12,44 @@ const pageButton: ("1" | "2" | "3" | "next" | "prev")[] = [
   "next",
 ];
 
-type paginationState = {
-  currentPage: 1 | 2 | 3;
-  paginatedItems: Products[];
-};
 
-type paginationAction =
-  | "1"
-  | "2"
-  | "3"
-  | "next"
-  | "prev"
-  | { type: "SET_PAGINATION"; payload: Products[] };
-
-const Products = ({ products, isLoading, isError, error }: ProductsProp) => {
-  const reducer = (state: paginationState, action: paginationAction) => {
-    if (typeof action === "object" && action.type === "SET_PAGINATION") {
-      return {
-        currentPage: 1,
-        paginatedItems: action.payload.slice(0, 10),
-      };
-    }
-    let nextPage = state.currentPage;
-
-    if (action === "next") {
-      nextPage =
-        state.currentPage < 3 ? ((state.currentPage + 1) as 1 | 2 | 3) : 3;
-    } else if (action === "prev") {
-      nextPage =
-        state.currentPage > 1 ? ((state.currentPage - 1) as 1 | 2 | 3) : 1;
-    } else {
-      nextPage = parseInt(action) as 1 | 2 | 3;
-    }
-
-    const start = (nextPage - 1) * 10;
-    const end = start + 10;
-
-    return {
-      currentPage: nextPage,
-      paginatedItems: products.slice(start, end),
-    };
-  };
+const RenderProducts = ({ products, isLoading, isError, error }: ProductsProp) => {
 
   const [gridForm, setGridForm] = useState<"col" | "row">("col");
 
-  const [state, dispatch] = useReducer(reducer, {
+  const initialState = {
     currentPage: 1,
-    paginatedItems: [],
-  });
+    paginatedItems: products.slice(0, 10)
+  }
 
-  useEffect(() => {
-    if (products && products.length > 0) {
-      dispatch({ type: "SET_PAGINATION", payload: products });
+  const reducer = (state: typeof initialState, action: typeof pageButton[number]) => {
+    switch (action) {
+      case "prev":
+        return {
+          ...state,
+          currentPage: state.currentPage - 1,
+          paginatedItems: products.slice((state.currentPage - 2) * 10, (state.currentPage - 1) * 10)
+        }
+      case "next":
+        return {
+          ...state,
+          currentPage: state.currentPage + 1,
+          paginatedItems: products.slice(state.currentPage * 10, (state.currentPage + 1) * 10)
+        }
+      case "1":
+      case "2":
+      case "3":
+        return {
+          ...state,
+          currentPage: Number(action),
+          paginatedItems: products.slice((Number(action) - 1) * 10, Number(action) * 10)
+        }
+      default:
+        return state;
     }
-  }, [products]);
+  }
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     window.scrollTo({
@@ -143,4 +127,4 @@ const Products = ({ products, isLoading, isError, error }: ProductsProp) => {
   );
 };
 
-export default Products;
+export default RenderProducts;

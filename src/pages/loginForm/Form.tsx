@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useReducer, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { type FormData } from "../../types";
 
 const formInputs: { id: number; name: string }[] = [
   {
@@ -12,14 +13,38 @@ const formInputs: { id: number; name: string }[] = [
   },
 ];
 
-type FormData = { username?: string; email: string; password: string };
-
-const Form = ({ user }: { user: "register" | "login" }) => {
+const Form = ({
+  user,
+  setCurrentUser,
+}: {
+  user: "register" | "login";
+  setCurrentUser: (user: string | null) => void;
+}) => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
-  const [registeredData, setregisteredData] = useState<FormData>({
+  const [registeredData, setRegisteredData] = useState<FormData[]>(() => {
+    const savedData = window.localStorage.getItem("formData");
+    return savedData ? JSON.parse(savedData) : [];
+  });
+
+  const [loading, dispatchLoading] = useReducer(
+    (state: { guest: boolean; user: boolean }, action: "guest" | "user") => {
+      switch (action) {
+        case "guest":
+          return { ...state, guest: true };
+        case "user":
+          return { ...state, user: true };
+        default:
+          return state;
+      }
+    },
+    { guest: false, user: false },
+  );
+
+  const [errorMessages, setErrorMessages] = useState<FormData>({
     username: "",
     email: "",
     password: "",
@@ -27,16 +52,60 @@ const Form = ({ user }: { user: "register" | "login" }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+    if (user === "register") {
       const username = usernameRef.current?.value;
-      const email = emailRef.current!.value;
-      const password = passwordRef.current!.value;
 
-      setregisteredData({ username, email, password });
+      if (!username || !email || !password) return;
 
-    console.log(registeredData);
-    
+      const isDuplicate = registeredData.some((data) => data.email === email);
+      if (isDuplicate) {
+        setErrorMessages((prev) => ({
+          ...prev,
+          email: "This email is already registered.",
+        }));
+        return;
+      }
+      setErrorMessages({ username: "", email: "", password: "" });
+      setRegisteredData((prev) => [...prev, { username, email, password }]);
+
+      setCurrentUser(username);
+      window.localStorage.setItem("currentUser", username);
+      dispatchLoading("user");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    } else {
+      const userData = registeredData.find((data) => data.email === email);
+      if (!userData) {
+        setErrorMessages((prev) => ({
+          ...prev,
+          email: "No account found with this email.",
+        }));
+        return;
+      }
+      if (userData.password !== password) {
+        setErrorMessages((prev) => ({
+          ...prev,
+          password: "Incorrect password.",
+        }));
+        return;
+      }
+      setErrorMessages({ username: "", email: "", password: "" });
+      setCurrentUser(userData.username || "User");
+      dispatchLoading("user");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
   };
+
+  console.log(registeredData);
+
+  useEffect(() => {
+    window.localStorage.setItem("formData", JSON.stringify(registeredData));
+  }, [registeredData]);
 
   return (
     <form
@@ -69,23 +138,47 @@ const Form = ({ user }: { user: "register" | "login" }) => {
             type={formInput.name}
             className="input input-lg bg-base-200"
           />
+          {errorMessages[formInput.name as keyof FormData] && (
+            <p className="text-sm text-error">
+              {errorMessages[formInput.name as keyof FormData]}
+            </p>
+          )}
         </div>
       ))}
+
       <div>
         <button
+          disabled={loading.user}
           type="submit"
-          className="btn btn-md btn-primary btn-block uppercase"
+          className={
+            loading.user
+              ? "btn btn-md btn-neutral btn-block uppercase"
+              : "btn btn-md btn-primary btn-block uppercase"
+          }
         >
-          {user}
+          {loading.user ? "sending" : user}
         </button>
       </div>
 
       {user === "login" && (
         <button
           type="button"
-          className="btn btn-md btn-secondary btn-block uppercase"
+          disabled={loading.guest}
+          className={
+            loading.guest
+              ? "btn btn-md btn-neutral btn-block uppercase"
+              : "btn btn-md btn-secondary btn-block uppercase"
+          }
+          onClick={() => {
+            setCurrentUser("demo user");
+            window.localStorage.setItem("currentUser", "Guest");
+            dispatchLoading("guest");
+            setTimeout(() => {
+              navigate("/");
+            }, 3000);
+          }}
         >
-          Guest User
+          {loading.guest ? "sending" : "guest user"}
         </button>
       )}
       <p className="text-center">

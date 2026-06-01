@@ -4,9 +4,9 @@ import { BsCart3 } from "react-icons/bs"
 import { MdDarkMode, MdLightMode } from "react-icons/md"
 import { RiMenu3Fill } from "react-icons/ri"
 import { Link, NavLink } from "react-router-dom"
-import type { ThemeProp } from "../types"
+import type { NavBarProps } from "../types"
 
-const NavBar = ({ theme, setTheme, carts }: ThemeProp) => {
+const NavBar = ({ theme, setTheme, carts }: NavBarProps) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   let totalQuantity = 0

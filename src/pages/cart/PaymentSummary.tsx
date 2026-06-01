@@ -1,12 +1,15 @@
+import { Link } from "react-router-dom";
 import type { Cart } from "../../types";
 import { formatCurrency } from "../../utilitis/money";
 
 const PaymentSummary = ({
   carts,
   isShipping,
+  currentUser,
 }: {
   carts: Cart[];
   isShipping: boolean;
+  currentUser: string | null;
 }) => {
   let subtotal = 0;
   const shippingPrice = isShipping ? 500 : 0;
@@ -44,7 +47,9 @@ const PaymentSummary = ({
         </p>
       </div>
 
-      <button className="btn btn-primary btn-md uppercase">please login</button>
+      <Link to={(currentUser && currentUser !== "Guest") ? "/checkout" : "/login"} className="btn btn-primary btn-md uppercase">
+        {(currentUser && currentUser !== "Guest") ? "Place an order" : "Please login"}
+      </Link>
     </div>
   );
 };

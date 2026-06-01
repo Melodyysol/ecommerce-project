@@ -36,13 +36,17 @@ const fetchProducts = async (): Promise<Products[]> => {
 };
 
 function App() {
+  const [currentUser, setCurrentUser] = useState<string | null>(() => {
+    return window.localStorage.getItem("currentUser");
+  });
+
   const [theme, setTheme] = useState<"winter" | "dracula">(() => {
     if (typeof window === "undefined") return "winter";
-    const storedTheme = window.localStorage.getItem("theme");
+    const storedTheme = window.window.localStorage.getItem("theme");
     return storedTheme === "dracula" ? "dracula" : "winter";
   });
   const [carts, setCart] = useState<Cart[]>(() => {
-    const savedCarts = window.localStorage.getItem("cart");
+    const savedCarts = window.window.localStorage.getItem("cart");
     return savedCarts ? JSON.parse(savedCarts) : [];
   });
 
@@ -76,14 +80,14 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(carts));
+    window.localStorage.setItem("cart", JSON.stringify(carts));
   }, [carts]);
 
   const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    window.localStorage.setItem("theme", theme);
+    window.window.localStorage.setItem("theme", theme);
   }, [theme]);
 
   const {
@@ -109,12 +113,22 @@ function App() {
             error={error}
             isError={isError}
             isLoading={isLoading}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
           />
         }
       />
       <Route
         path="/about"
-        element={<AboutPage theme={theme} setTheme={setTheme} carts={carts} />}
+        element={
+          <AboutPage
+            theme={theme}
+            setTheme={setTheme}
+            carts={carts}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
+        }
       />
       <Route
         path="/cart"
@@ -125,6 +139,8 @@ function App() {
             carts={carts}
             setCart={setCart}
             isShipping={isShipping}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
           />
         }
       />
@@ -140,6 +156,8 @@ function App() {
             isError={isError}
             isLoading={isLoading}
             setIsShipping={setIsShipping}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
           />
         }
       />
@@ -157,11 +175,19 @@ function App() {
             error={error}
             isError={isError}
             isLoading={isLoading}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
           />
         }
       />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/login"
+        element={<Login setCurrentUser={setCurrentUser} />}
+      />
+      <Route
+        path="/register"
+        element={<Register setCurrentUser={setCurrentUser} />}
+      />
     </Routes>
   );
 }
