@@ -37,19 +37,56 @@ const fetchProducts = async (): Promise<Products[]> => {
 };
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<string | null>(() => {
-    return window.localStorage.getItem("currentUser");
+  const [currentUser, setCurrentUser] = useState<{
+    username: string;
+    email: string;
+  } | null>(() => {
+    const storedUser = window.localStorage.getItem("currentUser");
+    return storedUser ? JSON.parse(storedUser) : null;
   });
+
+  const [toasts, setToasts] = useState<
+    { message: string; type: "error" | "success"; id: number }[]
+  >([]);
 
   const [theme, setTheme] = useState<"winter" | "dracula">(() => {
     if (typeof window === "undefined") return "winter";
-    const storedTheme = window.window.localStorage.getItem("theme");
+    const storedTheme = window.localStorage.getItem("theme");
     return storedTheme === "dracula" ? "dracula" : "winter";
   });
+
+  const resolveCartKey = (user: { username: string; email: string } | null) => {
+    console.log(user?.email);
+
+    return user
+      ? `cart_${user.email.replace(/\s+/g, "_").toLowerCase()}`
+      : "cart_guest";
+  };
+
+  const cartStorageKey = resolveCartKey(currentUser);
   const [carts, setCart] = useState<Cart[]>(() => {
-    const savedCarts = window.window.localStorage.getItem("cart");
+    const initialUser = window.localStorage.getItem("currentUser");
+    if (!initialUser) {
+      return [];
+    }
+    const parsedUser = JSON.parse(initialUser);
+    const initialCartKey = resolveCartKey(parsedUser);
+    const savedCarts = window.localStorage.getItem(initialCartKey);
     return savedCarts ? JSON.parse(savedCarts) : [];
   });
+
+  useEffect(() => {
+    const savedCarts = window.localStorage.getItem(cartStorageKey);
+    const parsedCart = savedCarts ? JSON.parse(savedCarts) : [];
+
+    if (JSON.stringify(parsedCart) !== JSON.stringify(carts)) {
+      setCart(parsedCart);
+    }
+  }, [currentUser, cartStorageKey]);
+
+  useEffect(() => {
+    window.localStorage.setItem(cartStorageKey, JSON.stringify(carts));
+  }, [carts, cartStorageKey]);
 
   const [isShipping, setIsShipping] = useState<boolean>(false);
 
@@ -69,6 +106,14 @@ function App() {
       );
 
       if (itemAlreadyExists) {
+        setToasts((prev) => [
+          ...prev,
+          {
+            message: "Successfully added to the quantity",
+            type: "success",
+            id: Date.now(),
+          },
+        ]);
         return prev.map((item) =>
           item.id === newCart.id && item.color === newCart.color
             ? { ...item, quantity: item.quantity + newCart.quantity }
@@ -76,6 +121,14 @@ function App() {
         );
       }
 
+      setToasts((prev) => [
+        ...prev,
+        {
+          message: "Successfully added to cart",
+          type: "success",
+          id: Date.now(),
+        },
+      ]);
       return [...prev, newCart];
     });
   };
@@ -88,7 +141,7 @@ function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    window.window.localStorage.setItem("theme", theme);
+    window.localStorage.setItem("theme", theme);
   }, [theme]);
 
   const {
@@ -134,34 +187,34 @@ function App() {
       <Route
         path="/cart"
         element={
-          <CartPage
-            theme={theme}
-            setTheme={setTheme}
-            carts={carts}
-            setCart={setCart}
-            isShipping={isShipping}
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser}
-          />
+          <ProtectedRoute currentUser={currentUser}>
+            <CartPage
+              theme={theme}
+              setTheme={setTheme}
+              carts={carts}
+              setCart={setCart}
+              isShipping={isShipping}
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/products"
         element={
-          <ProtectedRoute currentUser={currentUser}>
-            <ProductPage
-              theme={theme}
-              setTheme={setTheme}
-              carts={carts}
-              products={products}
-              error={error}
-              isError={isError}
-              isLoading={isLoading}
-              setIsShipping={setIsShipping}
-              currentUser={currentUser}
-              setCurrentUser={setCurrentUser}
-            />
-          </ProtectedRoute>
+          <ProductPage
+            theme={theme}
+            setTheme={setTheme}
+            carts={carts}
+            products={products}
+            error={error}
+            isError={isError}
+            isLoading={isLoading}
+            setIsShipping={setIsShipping}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
         }
       />
       <Route
@@ -180,16 +233,30 @@ function App() {
             isLoading={isLoading}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
+            toasts={toasts}
+            setToasts={setToasts}
           />
         }
       />
       <Route
         path="/login"
-        element={<Login setCurrentUser={setCurrentUser} />}
+        element={
+          <Login
+            setCurrentUser={setCurrentUser}
+            toasts={toasts}
+            setToasts={setToasts}
+          />
+        }
       />
       <Route
         path="/register"
-        element={<Register setCurrentUser={setCurrentUser} />}
+        element={
+          <Register
+            setCurrentUser={setCurrentUser}
+            toasts={toasts}
+            setToasts={setToasts}
+          />
+        }
       />
     </Routes>
   );

@@ -18,7 +18,7 @@ const Header = ({ theme, setTheme, carts, currentUser, setCurrentUser }: HeaderP
           {currentUser ? (
             <>
               <h1 className="text-[12px] sm:text-sm text-gray-400">
-                Hello! {currentUser.split(" ")[0] || currentUser.split("@")[0]}
+                Hello! {currentUser.username.split(" ")[0] || currentUser.username.split("@")[0]}
               </h1>
 
               <button

@@ -9,7 +9,7 @@ const PaymentSummary = ({
 }: {
   carts: Cart[];
   isShipping: boolean;
-  currentUser: string | null;
+  currentUser: {username: string; email: string} | null;
 }) => {
   let subtotal = 0;
   const shippingPrice = isShipping ? 500 : 0;
@@ -47,8 +47,8 @@ const PaymentSummary = ({
         </p>
       </div>
 
-      <Link to={(currentUser && currentUser !== "demo user") ? "/checkout" : "/login"} className="btn btn-primary btn-md uppercase">
-        {(currentUser && currentUser !== "demo user") ? "Place an order" : "Please login"}
+      <Link to={(currentUser?.username && currentUser.username !== "demo user") ? "/checkout" : "/login"} className="btn btn-primary btn-md uppercase">
+        {(currentUser?.username && currentUser.username !== "demo user") ? "Place an order" : "Please login"}
       </Link>
     </div>
   );

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Header from "./Header";
 import { Link, useParams } from "react-router-dom";
 import type { ItemPageProp } from "../types";
+import Toast from "./Toast";
 
 const Item = ({
   theme,
@@ -14,12 +15,19 @@ const Item = ({
   quantity,
   currentUser,
   setCurrentUser,
+  toasts,
+  setToasts
 }: ItemPageProp) => {
   const params = useParams<{ id: string }>();
 
   const itemId = params.id!;
+  
 
   const filteredItem = products.find((item) => String(item.id) === itemId);
+
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   const [activeColor, setActiveColor] = useState<string>(() => {
     if (filteredItem && filteredItem.colors && filteredItem.colors.length > 0) {
@@ -128,6 +136,16 @@ const Item = ({
           </div>
         </div>
       </section>
+      <div className=" gap-4 flex flex-col fixed top-5 left-0 right-0 pointer-events-none">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
     </main>
   );
 };

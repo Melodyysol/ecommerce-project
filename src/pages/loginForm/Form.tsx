@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { type FormData } from "../../types";
+import Toast from "../../components/Toast";
 
 const formInputs: { id: number; name: string }[] = [
   {
@@ -16,9 +17,25 @@ const formInputs: { id: number; name: string }[] = [
 const Form = ({
   user,
   setCurrentUser,
+  toasts,
+  setToasts,
 }: {
   user: "register" | "login";
-  setCurrentUser: (user: string | null) => void;
+  setCurrentUser: (user: { username: string; email: string } | null) => void;
+  toasts: {
+    message: string;
+    type: "success" | "error";
+    id: number;
+  }[];
+  setToasts: React.Dispatch<
+    React.SetStateAction<
+      {
+        message: string;
+        type: "error" | "success";
+        id: number;
+      }[]
+    >
+  >;
 }) => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -31,6 +48,10 @@ const Form = ({
     const savedData = window.localStorage.getItem("formData");
     return savedData ? JSON.parse(savedData) : [];
   });
+
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   const [loading, dispatchLoading] = useReducer(
     (state: { guest: boolean; user: boolean }, action: "guest" | "user") => {
@@ -72,10 +93,21 @@ const Form = ({
       setErrorMessages({ username: "", email: "", password: "" });
       setRegisteredData((prev) => [...prev, { username, email, password }]);
 
-      setCurrentUser(username);
-      window.localStorage.setItem("currentUser", username);
+      setCurrentUser({ username, email });
+      window.localStorage.setItem(
+        "currentUser",
+        JSON.stringify({ username, email }),
+      );
       dispatchLoading("user");
       setTimeout(() => {
+        setToasts((prev) => [
+          ...prev,
+          {
+            message: "Your accout has been created successfully!",
+            type: "success",
+            id: Date.now(),
+          },
+        ]);
         navigate(fromPage, { replace: true });
       }, 3000);
     } else {
@@ -95,10 +127,21 @@ const Form = ({
         return;
       }
       setErrorMessages({ username: "", email: "", password: "" });
-      setCurrentUser(userData.username || "User");
+      setCurrentUser({
+        username: userData.username || "demo user",
+        email: userData.email,
+      });
       dispatchLoading("user");
       setTimeout(() => {
         navigate(fromPage, { replace: true });
+        setToasts((prev) => [
+          ...prev,
+          {
+            message: `Welcome back ${userData.username?.split(" ")[0]}!`,
+            type: "success",
+            id: Date.now(),
+          },
+        ]);
       }, 3000);
     }
   };
@@ -172,10 +215,21 @@ const Form = ({
               : "btn btn-md btn-secondary btn-block uppercase"
           }
           onClick={() => {
-            setCurrentUser("demo user");
-            window.localStorage.setItem("currentUser", "Guest");
+            setCurrentUser({ username: "demo user", email: "demo@user.com" });
+            window.localStorage.setItem(
+              "currentUser",
+              JSON.stringify({ username: "demo user", email: "demo@user.com" }),
+            );
             dispatchLoading("guest");
             setTimeout(() => {
+              setToasts((prev) => [
+                ...prev,
+                {
+                  message: "Welcome to guest user",
+                  type: "success",
+                  id: Date.now(),
+                },
+              ]);
               navigate(fromPage, { replace: true });
             }, 3000);
           }}
@@ -192,6 +246,16 @@ const Form = ({
           {user === "login" ? "register" : "login"}
         </Link>
       </p>
+      <div className=" gap-4 flex flex-col fixed top-5 left-0 right-0 pointer-events-none">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
     </form>
   );
 };

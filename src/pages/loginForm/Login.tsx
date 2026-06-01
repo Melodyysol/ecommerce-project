@@ -1,17 +1,21 @@
-import { useEffect } from "react"
-import Form from "./Form"
+import { useEffect } from "react";
+import Form from "./Form";
+import type { FormProps } from "../../types";
 
-const Login = ({ setCurrentUser }: { setCurrentUser: (user: string | null) => void }) => {
-
+const Login = ({
+  setCurrentUser,
+  toasts,
+  setToasts,
+}: FormProps) => {
   useEffect(() => {
-    document.title = 'Login'
-  })
+    document.title = "Login";
+  });
 
   return (
     <section className="w-screen h-screen flex">
-      <Form user="login" setCurrentUser={setCurrentUser} />
+      <Form user="login" setCurrentUser={setCurrentUser} toasts={toasts} setToasts={setToasts} />
     </section>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
