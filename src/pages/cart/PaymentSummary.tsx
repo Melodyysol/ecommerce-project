@@ -47,8 +47,8 @@ const PaymentSummary = ({
         </p>
       </div>
 
-      <Link to={(currentUser && currentUser !== "Guest") ? "/checkout" : "/login"} className="btn btn-primary btn-md uppercase">
-        {(currentUser && currentUser !== "Guest") ? "Place an order" : "Please login"}
+      <Link to={(currentUser && currentUser !== "demo user") ? "/checkout" : "/login"} className="btn btn-primary btn-md uppercase">
+        {(currentUser && currentUser !== "demo user") ? "Place an order" : "Please login"}
       </Link>
     </div>
   );

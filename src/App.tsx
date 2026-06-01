@@ -12,6 +12,7 @@ import { productSchemaArrary, type Cart, type Products } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import Register from "./pages/loginForm/Register";
 import Login from "./pages/loginForm/Login";
+import ProtectedRoute from "./pages/cart/ProtectedRoute";
 
 const fetchProducts = async (): Promise<Products[]> => {
   try {
@@ -147,18 +148,20 @@ function App() {
       <Route
         path="/products"
         element={
-          <ProductPage
-            theme={theme}
-            setTheme={setTheme}
-            carts={carts}
-            products={products}
-            error={error}
-            isError={isError}
-            isLoading={isLoading}
-            setIsShipping={setIsShipping}
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser}
-          />
+          <ProtectedRoute currentUser={currentUser}>
+            <ProductPage
+              theme={theme}
+              setTheme={setTheme}
+              carts={carts}
+              products={products}
+              error={error}
+              isError={isError}
+              isLoading={isLoading}
+              setIsShipping={setIsShipping}
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
+          </ProtectedRoute>
         }
       />
       <Route

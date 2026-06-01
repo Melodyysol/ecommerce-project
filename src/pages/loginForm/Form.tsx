@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { type FormData } from "../../types";
 
 const formInputs: { id: number; name: string }[] = [
@@ -24,6 +24,8 @@ const Form = ({
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromPage = location.state?.from?.pathname || "/";
 
   const [registeredData, setRegisteredData] = useState<FormData[]>(() => {
     const savedData = window.localStorage.getItem("formData");
@@ -74,7 +76,7 @@ const Form = ({
       window.localStorage.setItem("currentUser", username);
       dispatchLoading("user");
       setTimeout(() => {
-        navigate("/");
+        navigate(fromPage, { replace: true });
       }, 3000);
     } else {
       const userData = registeredData.find((data) => data.email === email);
@@ -96,7 +98,7 @@ const Form = ({
       setCurrentUser(userData.username || "User");
       dispatchLoading("user");
       setTimeout(() => {
-        navigate("/");
+        navigate(fromPage, { replace: true });
       }, 3000);
     }
   };
@@ -174,7 +176,7 @@ const Form = ({
             window.localStorage.setItem("currentUser", "Guest");
             dispatchLoading("guest");
             setTimeout(() => {
-              navigate("/");
+              navigate(fromPage, { replace: true });
             }, 3000);
           }}
         >
