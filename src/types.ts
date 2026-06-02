@@ -37,6 +37,7 @@ export type NavBarProps = {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
+  currentUser: { username: string; email: string } | null;
 };
 
 export type AboutPageProps = {
@@ -65,6 +66,20 @@ export type HomePageProps = {
   carts: Cart[];
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
+  toasts: {
+    message: string;
+    type: "success" | "error";
+    id: number;
+  }[];
+  setToasts: React.Dispatch<
+    React.SetStateAction<
+      {
+        message: string;
+        type: "error" | "success";
+        id: number;
+      }[]
+    >
+  >;
 };
 
 export type ProductPageProps = {

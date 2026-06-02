@@ -169,6 +169,8 @@ function App() {
             isLoading={isLoading}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
+            toasts={toasts}
+            setToasts={setToasts}
           />
         }
       />

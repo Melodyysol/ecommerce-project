@@ -100,14 +100,6 @@ const Form = ({
       );
       dispatchLoading("user");
       setTimeout(() => {
-        setToasts((prev) => [
-          ...prev,
-          {
-            message: "Your accout has been created successfully!",
-            type: "success",
-            id: Date.now(),
-          },
-        ]);
         navigate(fromPage, { replace: true });
       }, 3000);
     } else {
@@ -134,14 +126,6 @@ const Form = ({
       dispatchLoading("user");
       setTimeout(() => {
         navigate(fromPage, { replace: true });
-        setToasts((prev) => [
-          ...prev,
-          {
-            message: `Welcome back ${userData.username?.split(" ")[0]}!`,
-            type: "success",
-            id: Date.now(),
-          },
-        ]);
       }, 3000);
     }
   };
@@ -222,14 +206,6 @@ const Form = ({
             );
             dispatchLoading("guest");
             setTimeout(() => {
-              setToasts((prev) => [
-                ...prev,
-                {
-                  message: "Welcome to guest user",
-                  type: "success",
-                  id: Date.now(),
-                },
-              ]);
               navigate(fromPage, { replace: true });
             }, 3000);
           }}

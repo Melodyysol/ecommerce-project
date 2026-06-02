@@ -46,7 +46,7 @@ const Header = ({ theme, setTheme, carts, currentUser, setCurrentUser }: HeaderP
           )}
         </div>
       </header>
-      <NavBar theme={theme} setTheme={setTheme} carts={carts} />
+      <NavBar theme={theme} setTheme={setTheme} carts={carts} currentUser={currentUser} />
     </>
   );
 };
