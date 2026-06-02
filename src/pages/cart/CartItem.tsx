@@ -1,12 +1,29 @@
+import Toast from "../../components/Toast";
 import type { Cart } from "../../types";
 import { formatCurrency } from "../../utilitis/money";
 
 const CartItem = ({
   carts,
   setCart,
+  toasts,
+  setToasts,
 }: {
   carts: Cart[];
   setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
+  toasts: {
+    message: string;
+    type: "success" | "error";
+    id: number;
+  }[];
+  setToasts: React.Dispatch<
+    React.SetStateAction<
+      {
+        message: string;
+        type: "error" | "success";
+        id: number;
+      }[]
+    >
+  >;
 }) => {
   const removeCart = (id: string, color: string) => {
     setCart((prev) =>
@@ -14,6 +31,17 @@ const CartItem = ({
         (cart) => String(cart.id) !== id || String(cart.color) !== color,
       ),
     );
+  };
+
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+    setToasts([
+      {
+        message: "Item remove from cart",
+        type: "success",
+        id: parseInt(crypto.randomUUID()),
+      },
+    ]);
   };
 
   const updateCartQuantity = (
@@ -88,6 +116,17 @@ const CartItem = ({
           </p>
         </article>
       ))}
+
+      <div className=" gap-4 flex flex-col fixed top-5 left-0 right-0 pointer-events-none">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 };

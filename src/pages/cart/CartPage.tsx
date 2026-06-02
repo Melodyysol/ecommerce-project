@@ -13,6 +13,8 @@ const CartPage = ({
   isShipping,
   currentUser,
   setCurrentUser,
+  toasts,
+  setToasts
 }: CartPageProps) => {
   useEffect(() => {
     document.title = "Cart";
@@ -36,7 +38,10 @@ const CartPage = ({
         </div>
       </section>
       <section className="lg:w-10/12 lg:mx-auto lg:grid lg:item-start lg:grid-cols-[1fr_24rem] lg:justify-between">
-        <CartItem carts={carts} setCart={setCart} />
+        <CartItem carts={carts} setCart={setCart}
+        toasts={toasts}
+        setToasts={setToasts}
+        />
         <PaymentSummary
           carts={carts}
           isShipping={isShipping}

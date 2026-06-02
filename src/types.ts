@@ -103,6 +103,20 @@ export type CartPageProps = {
   isShipping: boolean;
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
+  toasts: {
+    message: string;
+    type: "success" | "error";
+    id: number;
+  }[];
+  setToasts: React.Dispatch<
+    React.SetStateAction<
+      {
+        message: string;
+        type: "error" | "success";
+        id: number;
+      }[]
+    >
+  >;
 };
 
 export type CheckoutPageProps = {

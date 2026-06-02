@@ -216,6 +216,8 @@ function App() {
               isShipping={isShipping}
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
+              toasts={toasts}
+              setToasts={setToasts}
             />
           </ProtectedRoute>
         }
