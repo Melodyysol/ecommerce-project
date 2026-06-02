@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Header from "../../components/Header";
 import type { CartPageProps } from "../../types";
 import CartItem from "./CartItem";
-import PaymentSummary from "./PaymentSummary";
+import PaymentSummary from "../../components/PaymentSummary";
 
 const CartPage = ({
   theme,

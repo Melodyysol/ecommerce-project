@@ -49,9 +49,6 @@ const ProductPage = ({
       (matchesSearch && matchesPrice)
     );
   });
-
-  console.log(submitedData);
-
   // let orderedProducts = [...filteredProducts]
 
   if (submitedData.order === "z-a") {

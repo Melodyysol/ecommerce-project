@@ -73,7 +73,7 @@ const NavBar = ({ theme, setTheme, carts, currentUser }: NavBarProps) => {
                 cart
               </NavLink>
             </li>
-            { (currentUser && currentUser.username !== 'demo user') &&
+            {currentUser && currentUser.username !== "demo user" && (
               <>
                 <li>
                   <NavLink to="/checkout" className={activeLink}>
@@ -86,7 +86,7 @@ const NavBar = ({ theme, setTheme, carts, currentUser }: NavBarProps) => {
                   </NavLink>
                 </li>
               </>
-            }
+            )}
           </ul>
         </div>
         <div className="flex gap-5 items-center">

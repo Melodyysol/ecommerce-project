@@ -2,13 +2,19 @@ import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import type { HeaderProps } from "../types";
 
-const Header = ({ theme, setTheme, carts, currentUser, setCurrentUser }: HeaderProps) => {
+const Header = ({
+  theme,
+  setTheme,
+  carts,
+  currentUser,
+  setCurrentUser,
+}: HeaderProps) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setCurrentUser(null);
     window.localStorage.removeItem("currentUser");
-    navigate("/login")
+    navigate("/login");
   };
 
   return (
@@ -18,7 +24,9 @@ const Header = ({ theme, setTheme, carts, currentUser, setCurrentUser }: HeaderP
           {currentUser ? (
             <>
               <h1 className="text-[12px] sm:text-sm text-gray-400">
-                Hello! {currentUser.username.split(" ")[0] || currentUser.username.split("@")[0]}
+                Hello!{" "}
+                {currentUser.username.split(" ")[0] ||
+                  currentUser.username.split("@")[0]}
               </h1>
 
               <button
@@ -46,7 +54,12 @@ const Header = ({ theme, setTheme, carts, currentUser, setCurrentUser }: HeaderP
           )}
         </div>
       </header>
-      <NavBar theme={theme} setTheme={setTheme} carts={carts} currentUser={currentUser} />
+      <NavBar
+        theme={theme}
+        setTheme={setTheme}
+        carts={carts}
+        currentUser={currentUser}
+      />
     </>
   );
 };

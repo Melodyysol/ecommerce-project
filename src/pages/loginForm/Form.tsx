@@ -130,8 +130,6 @@ const Form = ({
     }
   };
 
-  console.log(registeredData);
-
   useEffect(() => {
     window.localStorage.setItem("formData", JSON.stringify(registeredData));
   }, [registeredData]);

@@ -105,6 +105,42 @@ export type CartPageProps = {
   setCurrentUser: (user: { username: string; email: string } | null) => void;
 };
 
+export type CheckoutPageProps = {
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  isShipping: boolean;
+  currentUser: { username: string; email: string } | null;
+  setCurrentUser: (user: { username: string; email: string } | null) => void;
+  setOrder: React.Dispatch<
+    React.SetStateAction<
+      {
+        id: number;
+        name: string;
+        address: string;
+        products: number;
+        cost: string;
+        date: string;
+      }[]
+    >
+  >;
+};
+export type OrderPageProps = {
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+  carts: Cart[];
+  currentUser: { username: string; email: string } | null;
+  setCurrentUser: (user: { username: string; email: string } | null) => void;
+  orders: {
+    id: number;
+    name: string;
+    address: string;
+    products: number;
+    cost: string;
+    date: string;
+  }[];
+};
+
 export type ItemPageProp = {
   products: Products[];
   isError: boolean;

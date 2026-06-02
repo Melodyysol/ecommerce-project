@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
-import type { Cart } from "../../types";
-import { formatCurrency } from "../../utilitis/money";
+import type { Cart } from "../types";
+import { formatCurrency } from "../utilitis/money";
 
 const PaymentSummary = ({
   carts,
   isShipping,
   currentUser,
+  checkoutIsUsingPayment,
 }: {
   carts: Cart[];
   isShipping: boolean;
-  currentUser: {username: string; email: string} | null;
+  currentUser: { username: string; email: string } | null;
+  checkoutIsUsingPayment?: boolean;
 }) => {
   let subtotal = 0;
   const shippingPrice = isShipping ? 500 : 0;
@@ -47,9 +49,18 @@ const PaymentSummary = ({
         </p>
       </div>
 
-      <Link to={(currentUser?.username && currentUser.username !== "demo user") ? "/checkout" : "/login"} className="btn btn-primary btn-md uppercase">
-        {(currentUser?.username && currentUser.username !== "demo user") ? "Place an order" : "Please login"}
-      </Link>
+      {currentUser?.username === "demo user" && (
+        <Link to="/login" className="btn btn-primary btn-md uppercase">
+          "Please login"
+        </Link>
+      )}
+
+      {currentUser?.username &&
+        (checkoutIsUsingPayment === undefined || !checkoutIsUsingPayment) && (
+          <Link to="/checkout" className="btn btn-primary btn-md uppercase">
+            "Procede to checkout"
+          </Link>
+        )}
     </div>
   );
 };

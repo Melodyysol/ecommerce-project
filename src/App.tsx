@@ -13,6 +13,8 @@ import { useQuery } from "@tanstack/react-query";
 import Register from "./pages/loginForm/Register";
 import Login from "./pages/loginForm/Login";
 import ProtectedRoute from "./pages/cart/ProtectedRoute";
+import CheckoutPage from "./pages/checkout/CheckoutPage";
+import OrderPage from "./pages/order/OrderPage";
 
 const fetchProducts = async (): Promise<Products[]> => {
   try {
@@ -56,8 +58,6 @@ function App() {
   });
 
   const resolveCartKey = (user: { username: string; email: string } | null) => {
-    console.log(user?.email);
-
     return user
       ? `cart_${user.email.replace(/\s+/g, "_").toLowerCase()}`
       : "cart_guest";
@@ -73,6 +73,20 @@ function App() {
     const initialCartKey = resolveCartKey(parsedUser);
     const savedCarts = window.localStorage.getItem(initialCartKey);
     return savedCarts ? JSON.parse(savedCarts) : [];
+  });
+
+  const [orders, setOrder] = useState<
+    {
+      id: number;
+      name: string;
+      address: string;
+      products: number;
+      cost: string;
+      date: string;
+    }[]
+  >(() => {
+    const savedOrders = window.localStorage.getItem("order");
+    return savedOrders ? JSON.parse(savedOrders) : [];
   });
 
   useEffect(() => {
@@ -136,6 +150,10 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem("cart", JSON.stringify(carts));
   }, [carts]);
+
+  useEffect(() => {
+    window.localStorage.setItem("order", JSON.stringify(orders));
+  }, [orders]);
 
   const [quantity, setQuantity] = useState<number>(1);
 
@@ -237,6 +255,33 @@ function App() {
             setCurrentUser={setCurrentUser}
             toasts={toasts}
             setToasts={setToasts}
+          />
+        }
+      />
+      <Route
+        path="/checkout"
+        element={
+          <CheckoutPage
+            theme={theme}
+            setTheme={setTheme}
+            carts={carts}
+            isShipping={isShipping}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            setOrder={setOrder}
+          />
+        }
+      />
+      <Route
+        path="/order"
+        element={
+          <OrderPage
+            theme={theme}
+            setTheme={setTheme}
+            carts={carts}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            orders={orders}
           />
         }
       />
