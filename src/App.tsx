@@ -123,7 +123,7 @@ function App() {
         setToasts((prev) => [
           ...prev,
           {
-            message: "Successfully added to the quantity",
+            message: "Quantity is updated",
             type: "success",
             id: Date.now(),
           },
@@ -138,7 +138,7 @@ function App() {
       setToasts((prev) => [
         ...prev,
         {
-          message: "Successfully added to cart",
+          message: "Item added to cart",
           type: "success",
           id: Date.now(),
         },
@@ -271,6 +271,7 @@ function App() {
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
             setOrder={setOrder}
+            setCart={setCart}
           />
         }
       />

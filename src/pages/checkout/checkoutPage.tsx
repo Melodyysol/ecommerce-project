@@ -3,6 +3,9 @@ import Header from "../../components/Header";
 import PaymentSummary from "../../components/PaymentSummary";
 import type { CheckoutPageProps } from "../../types";
 import { formatCurrency } from "../../utilitis/money";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = ({
   theme,
@@ -12,7 +15,15 @@ const CheckoutPage = ({
   setCurrentUser,
   isShipping,
   setOrder,
+  setCart,
 }: CheckoutPageProps) => {
+  const navigate = useNavigate();
+
+  dayjs.extend(advancedFormat);
+
+  const date = dayjs();
+  const orderedDate = date.format("hh:mm a - MMM Do, YYYY");
+
   useEffect(() => {
     document.title = "Checkout";
   }, []);
@@ -35,7 +46,7 @@ const CheckoutPage = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = nameRef.current!.value;
-    const address = nameRef.current!.value;
+    const address = addressRef.current!.value;
 
     setOrder((prev) => [
       ...prev,
@@ -45,9 +56,11 @@ const CheckoutPage = ({
         address,
         products: carts.length,
         cost,
-        date: `${Date.now()}`,
+        date: orderedDate,
       },
     ]);
+    navigate("/order");
+    setCart([]);
   };
 
   return (

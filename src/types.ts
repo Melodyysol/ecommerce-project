@@ -123,6 +123,7 @@ export type CheckoutPageProps = {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
   carts: Cart[];
+  setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
   isShipping: boolean;
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;

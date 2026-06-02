@@ -57,8 +57,12 @@ const PaymentSummary = ({
 
       {currentUser?.username &&
         (checkoutIsUsingPayment === undefined || !checkoutIsUsingPayment) && (
-          <Link to="/checkout" className="btn btn-primary btn-md uppercase">
-            "Procede to checkout"
+          <Link
+            to="/checkout"
+            type="button"
+            className="btn btn-primary btn-md uppercase"
+          >
+            Procede to checkout
           </Link>
         )}
     </div>

@@ -9,6 +9,7 @@ const OrderPage = ({
   setCurrentUser,
   orders,
 }: OrderPageProps) => {
+
   return (
     <main>
       <Header
@@ -45,12 +46,12 @@ const OrderPage = ({
               </thead>
               <tbody>
                 {orders.map((orderDetail) => (
-                  <tr>
+                  <tr key={orderDetail.id}>
                     <td>{orderDetail.name}</td>
                     <td>{orderDetail.address}</td>
                     <td>{orderDetail.products}</td>
                     <td>{orderDetail.cost}</td>
-                    <td className="hidden sm:block">06:51am-june 2nd, 2026</td>
+                    <td className="hidden sm:block">{orderDetail.date}</td>
                   </tr>
                 ))}
               </tbody>
