@@ -23,7 +23,7 @@ import OrderPage from "./pages/order/OrderPage";
 
 const fetchProducts = async (): Promise<Products[]> => {
   try {
-    const response = await axios.get("/api/react-store-products");
+    const response = await axios.get("https://www.course-api.com/react-store-products");
     // if (!response) throw new Error("Error in fetching data");
 
     const validatingProducts = productSchemaArrary.safeParse(response.data);
