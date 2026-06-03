@@ -33,6 +33,15 @@ export type Cart = {
   quantity: number;
 };
 
+export type Order = {
+  id: number;
+  name: string;
+  address: string;
+  products: number;
+  cost: string;
+  date: string;
+};
+
 export type NavBarProps = {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
@@ -127,18 +136,7 @@ export type CheckoutPageProps = {
   isShipping: boolean;
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
-  setOrder: React.Dispatch<
-    React.SetStateAction<
-      {
-        id: number;
-        name: string;
-        address: string;
-        products: number;
-        cost: string;
-        date: string;
-      }[]
-    >
-  >;
+  setOrder: React.Dispatch<React.SetStateAction<Order[]>>;
 };
 export type OrderPageProps = {
   theme: ThemeName;
@@ -146,14 +144,7 @@ export type OrderPageProps = {
   carts: Cart[];
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
-  orders: {
-    id: number;
-    name: string;
-    address: string;
-    products: number;
-    cost: string;
-    date: string;
-  }[];
+  orders: Order[];
 };
 
 export type ItemPageProp = {

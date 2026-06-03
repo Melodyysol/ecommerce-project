@@ -8,7 +8,12 @@ import CartPage from "./pages/cart/CartPage";
 import ProductPage from "./pages/productPage/ProductPage";
 import Item from "./components/Item";
 import axios from "axios";
-import { productSchemaArrary, type Cart, type Products } from "./types";
+import {
+  productSchemaArrary,
+  type Cart,
+  type Order,
+  type Products,
+} from "./types";
 import { useQuery } from "@tanstack/react-query";
 import Register from "./pages/loginForm/Register";
 import Login from "./pages/loginForm/Login";
@@ -75,16 +80,7 @@ function App() {
     return savedCarts ? JSON.parse(savedCarts) : [];
   });
 
-  const [orders, setOrder] = useState<
-    {
-      id: number;
-      name: string;
-      address: string;
-      products: number;
-      cost: string;
-      date: string;
-    }[]
-  >(() => {
+  const [orders, setOrder] = useState<Order[]>(() => {
     const savedOrders = window.localStorage.getItem("order");
     return savedOrders ? JSON.parse(savedOrders) : [];
   });
