@@ -5,6 +5,8 @@ import { BsTwitter } from "react-icons/bs";
 import { FiInstagram } from "react-icons/fi";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa6";
+
+import DeveloperImage from "../assets/517.png";
 const AboutPage = ({
   theme,
   setTheme,
@@ -51,7 +53,7 @@ const AboutPage = ({
           </h2>
           <div className="flex flex-col md:flex-row items-center gap-10 justify-center">
             <img
-              src="https://avatars.githubusercontent.com/u/12345678?v=4"
+              src={DeveloperImage}
               alt="Developer"
               className="w-48 h-48 rounded-full object-cover"
             />
