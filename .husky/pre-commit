@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run lint # Run ESLint to check for code quality issues. If any issues are found, the commit will be aborted.
+
+npm run test:run # Run tests before committing. If any test fails, the commit will be aborted.
