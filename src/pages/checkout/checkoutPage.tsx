@@ -1,23 +1,22 @@
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 import Header from "../../components/Header";
 import PaymentSummary from "../../components/PaymentSummary";
-import type { CheckoutPageProps } from "../../types";
+import type { CheckoutPageProps } from "../../types/types";
 import { formatCurrency } from "../../utilitis/money";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../../hooks/useCart";
 
 const CheckoutPage = ({
-  theme,
-  setTheme,
-  carts,
   currentUser,
   setCurrentUser,
   isShipping,
   setOrder,
-  setCart,
 }: CheckoutPageProps) => {
   const navigate = useNavigate();
+
+  const {carts, dispatch} = use(CartContext)
 
   dayjs.extend(advancedFormat);
 
@@ -60,15 +59,12 @@ const CheckoutPage = ({
       },
     ]);
     navigate("/order");
-    setCart([]);
+    dispatch({type: "CLEAR_CART"});
   };
 
   return (
     <main>
       <Header
-        theme={theme}
-        setTheme={setTheme}
-        carts={carts}
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
       />
@@ -120,7 +116,6 @@ const CheckoutPage = ({
           </div>
           <PaymentSummary
             checkoutIsUsingPayment={true}
-            carts={carts}
             isShipping={isShipping}
             currentUser={currentUser}
           />

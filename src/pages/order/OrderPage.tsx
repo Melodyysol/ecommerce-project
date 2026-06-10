@@ -1,11 +1,8 @@
 import { useReducer, Fragment } from "react";
 import Header from "../../components/Header";
-import type { OrderPageProps } from "../../types";
+import type { OrderPageProps } from "../../types/types";
 
 const OrderPage = ({
-  theme,
-  setTheme,
-  carts,
   currentUser,
   setCurrentUser,
   orders,
@@ -15,8 +12,6 @@ const OrderPage = ({
 
   const totalPages = Math.round(orders.length / ITEMS_PER_PAGE);
   const pages = Array.from({ length: totalPages }, (_, i) => String(i + 1));
-
-  console.log(pages);
 
   const pageButton: ((typeof pages)[number] | "next" | "prev")[] = [
     "prev",
@@ -72,9 +67,6 @@ const OrderPage = ({
   return (
     <main>
       <Header
-        theme={theme}
-        setTheme={setTheme}
-        carts={carts}
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
       />

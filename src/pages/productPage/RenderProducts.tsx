@@ -1,8 +1,8 @@
 import { CgMenu, CgMenuGridR } from "react-icons/cg";
 
 import ProductsGrid from "../../components/ProductsGrid";
-import { useEffect, useReducer, useState } from "react";
-import type { ProductsProp } from "../../types";
+import {  useEffect, useReducer, useState } from "react";
+import type { Products } from "../../types/types";
 
 const pageButton: ("1" | "2" | "3" | "next" | "prev")[] = [
   "prev",
@@ -13,7 +13,7 @@ const pageButton: ("1" | "2" | "3" | "next" | "prev")[] = [
 ];
 
 
-const RenderProducts = ({ products, isLoading, isError, error }: ProductsProp) => {
+const RenderProducts = ({ products }: {products: Products[]}) => {
 
   const [gridForm, setGridForm] = useState<"col" | "row">("col");
 
@@ -91,9 +91,6 @@ const RenderProducts = ({ products, isLoading, isError, error }: ProductsProp) =
       {/*  Products grid */}
       <ProductsGrid
         products={state.paginatedItems}
-        error={error}
-        isError={isError}
-        isLoading={isLoading}
         gridForm={gridForm}
       />
 

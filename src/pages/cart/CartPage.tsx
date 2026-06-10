@@ -1,15 +1,13 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import Header from "../../components/Header";
-import type { CartPageProps } from "../../types";
+import type { CartPageProps } from "../../types/types";
 import CartItem from "./CartItem";
 import PaymentSummary from "../../components/PaymentSummary";
+import { CartContext } from "../../hooks/useCart";
+
 
 const CartPage = ({
-  theme,
-  setTheme,
-  carts,
-  setCart,
   isShipping,
   currentUser,
   setCurrentUser,
@@ -20,12 +18,12 @@ const CartPage = ({
     document.title = "Cart";
   }, []);
 
+  const {carts} = useContext(CartContext)
+
+
   return (
     <main>
       <Header
-        theme={theme}
-        setTheme={setTheme}
-        carts={carts}
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
       />
@@ -39,14 +37,11 @@ const CartPage = ({
       </section>
       <section className="lg:w-10/12 lg:mx-auto lg:grid lg:item-start lg:grid-cols-[1fr_24rem] lg:justify-between">
         <CartItem
-          carts={carts}
-          setCart={setCart}
           toasts={toasts}
           setToasts={setToasts}
         />
         {carts.length > 0 && (
           <PaymentSummary
-            carts={carts}
             isShipping={isShipping}
             currentUser={currentUser}
           />

@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 
 import { BsCart3 } from "react-icons/bs";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { RiMenu3Fill } from "react-icons/ri";
 import { Link, NavLink } from "react-router-dom";
-import type { NavBarProps } from "../types";
+import type { NavBarProps } from "../types/types";
+import { CartContext } from "../hooks/useCart";
+import { ThemeContext } from "../hooks/useTheme";
 
-const NavBar = ({ theme, setTheme, carts, currentUser }: NavBarProps) => {
+const NavBar = ({ currentUser }: NavBarProps) => {
+  const {carts} = use(CartContext);
+  const {theme, toggleTheme} = use(ThemeContext);
+
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   let totalQuantity = 0;
@@ -21,7 +26,7 @@ const NavBar = ({ theme, setTheme, carts, currentUser }: NavBarProps) => {
     };
   }, []);
 
-  carts.forEach((cart) => {
+  carts.map((cart) => {
     totalQuantity = totalQuantity + cart.quantity;
   });
 
@@ -91,7 +96,7 @@ const NavBar = ({ theme, setTheme, carts, currentUser }: NavBarProps) => {
         </div>
         <div className="flex gap-5 items-center">
           <button
-            onClick={() => setTheme(theme === "winter" ? "dracula" : "winter")}
+            onClick={toggleTheme}
             className="cursor-pointer text-xl md:text-2xl"
           >
             {theme === "winter" ? (

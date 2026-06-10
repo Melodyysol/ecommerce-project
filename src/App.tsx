@@ -7,41 +7,14 @@ import AboutPage from "./pages/AboutPage";
 import CartPage from "./pages/cart/CartPage";
 import ProductPage from "./pages/productPage/ProductPage";
 import Item from "./components/Item";
-import axios from "axios";
-import {
-  productSchemaArrary,
-  type Cart,
-  type Order,
-  type Products,
-} from "./types";
-import { useQuery } from "@tanstack/react-query";
+import { type Order } from "./types/types";
 import Register from "./pages/loginForm/Register";
 import Login from "./pages/loginForm/Login";
 import ProtectedRoute from "./pages/cart/ProtectedRoute";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import OrderPage from "./pages/order/OrderPage";
-
-const fetchProducts = async (): Promise<Products[]> => {
-  try {
-    const response = await axios.get("https://www.course-api.com/react-store-products");
-    // if (!response) throw new Error("Error in fetching data");
-
-    const validatingProducts = productSchemaArrary.safeParse(response.data);
-
-    if (!validatingProducts.success) {
-      throw new Error(validatingProducts.error.message);
-    }
-    return validatingProducts.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error; // rethrow original error
-    }
-
-    throw new Error("Unknown error occurred", {
-      cause: error,
-    });
-  }
-};
+import FormPra from "./pages/loginForm/FormPra";
+import FormAction from "./pages/loginForm/FormAction";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<{
@@ -56,96 +29,12 @@ function App() {
     { message: string; type: "error" | "success"; id: number }[]
   >([]);
 
-  const [theme, setTheme] = useState<"winter" | "dracula">(() => {
-    if (typeof window === "undefined") return "winter";
-    const storedTheme = window.localStorage.getItem("theme");
-    return storedTheme === "dracula" ? "dracula" : "winter";
-  });
-
-  const resolveCartKey = (user: { username: string; email: string } | null) => {
-    return user
-      ? `cart_${user.email.replace(/\s+/g, "_").toLowerCase()}`
-      : "cart_guest";
-  };
-
-  const cartStorageKey = resolveCartKey(currentUser);
-  const [carts, setCart] = useState<Cart[]>(() => {
-    const initialUser = window.localStorage.getItem("currentUser");
-    if (!initialUser) {
-      return [];
-    }
-    const parsedUser = JSON.parse(initialUser);
-    const initialCartKey = resolveCartKey(parsedUser);
-    const savedCarts = window.localStorage.getItem(initialCartKey);
-    return savedCarts ? JSON.parse(savedCarts) : [];
-  });
-
   const [orders, setOrder] = useState<Order[]>(() => {
     const savedOrders = window.localStorage.getItem("order");
     return savedOrders ? JSON.parse(savedOrders) : [];
   });
 
-  useEffect(() => {
-    const savedCarts = window.localStorage.getItem(cartStorageKey);
-    const parsedCart = savedCarts ? JSON.parse(savedCarts) : [];
-
-    if (JSON.stringify(parsedCart) !== JSON.stringify(carts)) {
-      setCart(parsedCart);
-    }
-  }, [currentUser, cartStorageKey]);
-
-  useEffect(() => {
-    window.localStorage.setItem(cartStorageKey, JSON.stringify(carts));
-  }, [carts, cartStorageKey]);
-
   const [isShipping, setIsShipping] = useState<boolean>(false);
-
-  const addToBag = (filteredItem: Products, activeColor: string) => {
-    const newCart: Cart = {
-      id: filteredItem.id,
-      name: filteredItem.name,
-      image: filteredItem.image,
-      color: activeColor,
-      company: filteredItem.company,
-      price: filteredItem.price,
-      quantity: quantity,
-    };
-    setCart((prev) => {
-      const itemAlreadyExists = prev.some(
-        (item) => item.id === newCart.id && item.color === newCart.color,
-      );
-
-      if (itemAlreadyExists) {
-        setToasts((prev) => [
-          ...prev,
-          {
-            message: "Quantity is updated",
-            type: "success",
-            id: Date.now(),
-          },
-        ]);
-        return prev.map((item) =>
-          item.id === newCart.id && item.color === newCart.color
-            ? { ...item, quantity: item.quantity + newCart.quantity }
-            : item,
-        );
-      }
-
-      setToasts((prev) => [
-        ...prev,
-        {
-          message: "Item added to cart",
-          type: "success",
-          id: Date.now(),
-        },
-      ]);
-      return [...prev, newCart];
-    });
-  };
-
-  useEffect(() => {
-    window.localStorage.setItem("cart", JSON.stringify(carts));
-  }, [carts]);
 
   useEffect(() => {
     window.localStorage.setItem("order", JSON.stringify(orders));
@@ -153,34 +42,12 @@ function App() {
 
   const [quantity, setQuantity] = useState<number>(1);
 
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    window.localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const {
-    data: products = [],
-    error,
-    isError,
-    isLoading,
-  } = useQuery({
-    queryKey: ["product"],
-    queryFn: fetchProducts,
-  });
-
   return (
     <Routes>
       <Route
         index
         element={
           <HomePage
-            theme={theme}
-            setTheme={setTheme}
-            carts={carts}
-            products={products}
-            error={error}
-            isError={isError}
-            isLoading={isLoading}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
             toasts={toasts}
@@ -192,9 +59,6 @@ function App() {
         path="/about"
         element={
           <AboutPage
-            theme={theme}
-            setTheme={setTheme}
-            carts={carts}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
           />
@@ -205,10 +69,6 @@ function App() {
         element={
           <ProtectedRoute currentUser={currentUser}>
             <CartPage
-              theme={theme}
-              setTheme={setTheme}
-              carts={carts}
-              setCart={setCart}
               isShipping={isShipping}
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
@@ -222,13 +82,6 @@ function App() {
         path="/products"
         element={
           <ProductPage
-            theme={theme}
-            setTheme={setTheme}
-            carts={carts}
-            products={products}
-            error={error}
-            isError={isError}
-            isLoading={isLoading}
             setIsShipping={setIsShipping}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
@@ -239,16 +92,8 @@ function App() {
         path="/item/:id"
         element={
           <Item
-            theme={theme}
-            setTheme={setTheme}
-            carts={carts}
-            addToBag={addToBag}
             quantity={quantity}
             setQuantity={setQuantity!}
-            products={products}
-            error={error}
-            isError={isError}
-            isLoading={isLoading}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
             toasts={toasts}
@@ -260,14 +105,10 @@ function App() {
         path="/checkout"
         element={
           <CheckoutPage
-            theme={theme}
-            setTheme={setTheme}
-            carts={carts}
             isShipping={isShipping}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
             setOrder={setOrder}
-            setCart={setCart}
           />
         }
       />
@@ -275,9 +116,6 @@ function App() {
         path="/order"
         element={
           <OrderPage
-            theme={theme}
-            setTheme={setTheme}
-            carts={carts}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
             orders={orders}
@@ -304,6 +142,8 @@ function App() {
           />
         }
       />
+      <Route path="/form" element={<FormPra />} />
+      <Route path="/form-action" element={<FormAction />} />
     </Routes>
   );
 }

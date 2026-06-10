@@ -1,15 +1,12 @@
+import { use } from "react";
 import Toast from "../../components/Toast";
-import type { Cart } from "../../types";
 import { formatCurrency } from "../../utilitis/money";
+import { CartContext } from "../../hooks/useCart";
 
 const CartItem = ({
-  carts,
-  setCart,
   toasts,
   setToasts,
 }: {
-  carts: Cart[];
-  setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
   toasts: {
     message: string;
     type: "success" | "error";
@@ -25,19 +22,19 @@ const CartItem = ({
     >
   >;
 }) => {
+  const {carts, dispatch} = use(CartContext)
+
+  
+
   const removeCart = (id: string, color: string) => {
-    setCart((prev) =>
-      prev.filter(
-        (cart) => String(cart.id) !== id || String(cart.color) !== color,
-      ),
-    );
+    dispatch({ type: "REMOVE_ITEM", payload: { id, color } });
   };
 
   const removeToast = (id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
     setToasts([
       {
-        message: "Item remove from cart",
+        message: "Item removed from cart",
         type: "success",
         id: parseInt(crypto.randomUUID()),
       },
@@ -49,13 +46,10 @@ const CartItem = ({
     color: string,
     newQuantity: number,
   ) => {
-    setCart((prev) =>
-      prev.map((cart) =>
-        cart.id === id && cart.color === color
-          ? { ...cart, quantity: newQuantity }
-          : cart,
-      ),
-    );
+    dispatch({
+      type: "UPDATE_CART_QUANTITY",
+      payload: { id, color, newQuantity },
+    });
   };
 
   return (

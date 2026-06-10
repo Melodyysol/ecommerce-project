@@ -1,14 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
-import type { HeaderProps } from "../types";
+import type { HeaderProps } from "../types/types";
+import ThemeProvider from "../contexts/ThemeContext";
 
-const Header = ({
-  theme,
-  setTheme,
-  carts,
-  currentUser,
-  setCurrentUser,
-}: HeaderProps) => {
+const Header = ({ currentUser, setCurrentUser }: HeaderProps) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -54,12 +49,9 @@ const Header = ({
           )}
         </div>
       </header>
-      <NavBar
-        theme={theme}
-        setTheme={setTheme}
-        carts={carts}
-        currentUser={currentUser}
-      />
+      <ThemeProvider>
+        <NavBar currentUser={currentUser} />
+      </ThemeProvider>
     </>
   );
 };

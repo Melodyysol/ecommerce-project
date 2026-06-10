@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Form from "./Form";
-import type { FormProps } from "../../types";
+import type { FormProps } from "../../types/types";
 const Register = ({ setCurrentUser, toasts, setToasts }: FormProps) => {
   useEffect(() => {
     document.title = "Register";

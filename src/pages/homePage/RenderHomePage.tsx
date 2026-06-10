@@ -1,14 +1,13 @@
 // import projects from "../../data/projects"
 import { Link } from "react-router-dom";
 import ProductsGrid from "../../components/ProductsGrid";
-import type { ProductsProp } from "../../types";
+import { use } from "react";
+import { productContext } from "../../hooks/useProduct";
 
-const RenderHomePage = ({
-  products,
-  isError,
-  isLoading,
-  error,
-}: ProductsProp) => {
+const RenderHomePage = () => {
+
+  const {products, isLoading, isError, error} = use(productContext)
+
   if (isLoading) {
     return (
       <div className="w-screen h-screen flex">
@@ -73,9 +72,6 @@ const RenderHomePage = ({
         <ProductsGrid
           gridForm={"col"}
           products={products}
-          error={error}
-          isError={isError}
-          isLoading={isLoading}
         />
       </div>
     </section>

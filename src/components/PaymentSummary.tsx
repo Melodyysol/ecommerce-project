@@ -1,18 +1,20 @@
 import { Link } from "react-router-dom";
-import type { Cart } from "../types";
 import { formatCurrency } from "../utilitis/money";
+import { useContext } from "react";
+import { CartContext } from "../hooks/useCart";
 
 const PaymentSummary = ({
-  carts,
   isShipping,
   currentUser,
   checkoutIsUsingPayment,
 }: {
-  carts: Cart[];
   isShipping: boolean;
   currentUser: { username: string; email: string } | null;
   checkoutIsUsingPayment?: boolean;
 }) => {
+
+  const {carts} = useContext(CartContext)
+
   let subtotal = 0;
   const shippingPrice = isShipping ? 500 : 0;
   const taxPrice = 1380;

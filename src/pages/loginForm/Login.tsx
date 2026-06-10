@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Form from "./Form";
-import type { FormProps } from "../../types";
+import type { FormProps } from "../../types/types";
 
 const Login = ({ setCurrentUser, toasts, setToasts }: FormProps) => {
   useEffect(() => {

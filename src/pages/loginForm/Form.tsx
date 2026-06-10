@@ -1,7 +1,8 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { type FormData } from "../../types";
+import { type FormData } from "../../types/types";
 import Toast from "../../components/Toast";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 const formInputs: { id: number; name: string }[] = [
   {
@@ -37,9 +38,13 @@ const Form = ({
     >
   >;
 }) => {
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormData>();
+
   const navigate = useNavigate();
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
@@ -49,85 +54,54 @@ const Form = ({
     return savedData ? JSON.parse(savedData) : [];
   });
 
-  const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  const [loading, dispatchLoading] = useReducer(
-    (state: { guest: boolean; user: boolean }, action: "guest" | "user") => {
-      switch (action) {
-        case "guest":
-          return { ...state, guest: true };
-        case "user":
-          return { ...state, user: true };
-        default:
-          return state;
-      }
-    },
-    { guest: false, user: false },
-  );
-
-  const [errorMessages, setErrorMessages] = useState<FormData>({
-    username: "",
-    email: "",
-    password: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+  const onSubmit: SubmitHandler<FormData> = (data) => {
     if (user === "register") {
-      const username = usernameRef.current?.value;
-
-      if (!username || !email || !password) return;
-
-      const isDuplicate = registeredData.some((data) => data.email === email);
+      const isDuplicate = registeredData.some((d) => d.email === data.email);
       if (isDuplicate) {
-        setErrorMessages((prev) => ({
-          ...prev,
-          email: "This email is already registered.",
-        }));
+        setError("email", {
+          type: "manual",
+          message: "This email has already been registered.",
+        });
         return;
       }
-      setErrorMessages({ username: "", email: "", password: "" });
-      setRegisteredData((prev) => [...prev, { username, email, password }]);
+      const username = data.username || "demo user";
+      const email = data.email;
 
+      setRegisteredData((prev) => [...prev, data]);
       setCurrentUser({ username, email });
-      window.localStorage.setItem(
-        "currentUser",
-        JSON.stringify({ username, email }),
-      );
-      dispatchLoading("user");
-      setTimeout(() => {
-        navigate(fromPage, { replace: true });
-      }, 3000);
+
+      localStorage.setItem("currentUser", JSON.stringify({ username, email }));
+      navigate(fromPage, { replace: true });
     } else {
-      const userData = registeredData.find((data) => data.email === email);
+      const userData = registeredData.find((d) => d.email === data.email);
       if (!userData) {
-        setErrorMessages((prev) => ({
-          ...prev,
-          email: "No account found with this email.",
-        }));
+        setError("email", {
+          type: "manual",
+          message: "No account found with this email.",
+        });
         return;
       }
-      if (userData.password !== password) {
-        setErrorMessages((prev) => ({
-          ...prev,
-          password: "Incorrect password.",
-        }));
+      if (userData.password !== data.password) {
+        setError("password", {
+          type: "manual",
+          message: "Incorrect password.",
+        });
         return;
       }
-      setErrorMessages({ username: "", email: "", password: "" });
-      setCurrentUser({
+      const loggedInUser = {
         username: userData.username || "demo user",
         email: userData.email,
-      });
-      dispatchLoading("user");
-      setTimeout(() => {
-        navigate(fromPage, { replace: true });
-      }, 3000);
+      };
+
+      setCurrentUser(loggedInUser);
+
+      localStorage.setItem("currentUser", JSON.stringify(loggedInUser));
+      navigate(fromPage, { replace: true });
     }
+  };
+
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
   useEffect(() => {
@@ -136,7 +110,7 @@ const Form = ({
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="bg-base-100 m-auto rounded-2xl shadow hover:shadow-2xl py-5 px-10 w-4/5 max-w-100 flex flex-col gap-5"
     >
       <h1 className="text-center text-3xl font-bold capitalize">{user}</h1>
@@ -146,11 +120,19 @@ const Form = ({
             <span className="capitalize">username</span>
           </label>
           <input
-            required
-            ref={usernameRef}
+            {...register("username", {
+              required: "Username is not provided",
+              minLength: {
+                value: 3,
+                message: "Username must be atleast 3 characters",
+              },
+            })}
             type="text"
             className="input input-lg bg-base-200"
           />
+          {errors.username && (
+            <p className="text-sm text-error">{errors.username.message}</p>
+          )}
         </div>
       )}
 
@@ -160,14 +142,27 @@ const Form = ({
             <span className="capitalize">{formInput.name}</span>
           </label>
           <input
-            required
-            ref={formInput.name === "email" ? emailRef : passwordRef}
             type={formInput.name}
+            {...register(formInput.name as keyof FormData, {
+              required:
+                formInput.name === "email"
+                  ? "Email must be provided"
+                  : "Password must be provided",
+              pattern: formInput.name === "email" ? {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address",
+              } : undefined,
+              minLength: formInput.name === "password" ? {
+                value: 8,
+                message: "Password must be atleast 8 characters",
+              } : undefined,
+            })}
             className="input input-lg bg-base-200"
           />
-          {errorMessages[formInput.name as keyof FormData] && (
+
+          {errors[formInput.name as keyof FormData] && (
             <p className="text-sm text-error">
-              {errorMessages[formInput.name as keyof FormData]}
+              {errors[formInput.name as keyof FormData]?.message}
             </p>
           )}
         </div>
@@ -175,24 +170,24 @@ const Form = ({
 
       <div>
         <button
-          disabled={loading.user}
+          disabled={!isValid}
           type="submit"
           className={
-            loading.user
+            isSubmitting
               ? "btn btn-md btn-neutral btn-block uppercase"
               : "btn btn-md btn-primary btn-block uppercase"
           }
         >
-          {loading.user ? "sending" : user}
+          {isSubmitting ? "sending" : user}
         </button>
       </div>
 
       {user === "login" && (
         <button
           type="button"
-          disabled={loading.guest}
+          disabled={isSubmitting}
           className={
-            loading.guest
+            isSubmitting
               ? "btn btn-md btn-neutral btn-block uppercase"
               : "btn btn-md btn-secondary btn-block uppercase"
           }
@@ -202,13 +197,10 @@ const Form = ({
               "currentUser",
               JSON.stringify({ username: "demo user", email: "demo@user.com" }),
             );
-            dispatchLoading("guest");
-            setTimeout(() => {
-              navigate(fromPage, { replace: true });
-            }, 3000);
+            navigate(fromPage, { replace: true });
           }}
         >
-          {loading.guest ? "sending" : "guest user"}
+          {isSubmitting ? "sending" : "guest user"}
         </button>
       )}
       <p className="text-center">

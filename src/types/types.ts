@@ -43,36 +43,20 @@ export type Order = {
 };
 
 export type NavBarProps = {
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
   currentUser: { username: string; email: string } | null;
 };
 
 export type AboutPageProps = {
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
 };
 
 export type HeaderProps = {
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
 };
 
 export type HomePageProps = {
-  products: Products[];
-  isError: boolean;
-  error: Error | null;
-  isLoading: boolean;
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
   toasts: {
@@ -92,23 +76,12 @@ export type HomePageProps = {
 };
 
 export type ProductPageProps = {
-  products: Products[];
-  isError: boolean;
-  error: Error | null;
-  isLoading: boolean;
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
   setIsShipping: React.Dispatch<React.SetStateAction<boolean>>;
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
 };
 
 export type CartPageProps = {
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
-  setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
   isShipping: boolean;
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
@@ -129,33 +102,18 @@ export type CartPageProps = {
 };
 
 export type CheckoutPageProps = {
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
-  setCart: React.Dispatch<React.SetStateAction<Cart[]>>;
   isShipping: boolean;
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
   setOrder: React.Dispatch<React.SetStateAction<Order[]>>;
 };
 export type OrderPageProps = {
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
   currentUser: { username: string; email: string } | null;
   setCurrentUser: (user: { username: string; email: string } | null) => void;
   orders: Order[];
 };
 
 export type ItemPageProp = {
-  products: Products[];
-  isError: boolean;
-  error: Error | null;
-  isLoading: boolean;
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  carts: Cart[];
-  addToBag: (filteredItem: Products, activeColor: string) => void;
   setQuantity: (quantity: number) => void;
   quantity: number;
   currentUser: { username: string; email: string } | null;
@@ -178,9 +136,6 @@ export type ItemPageProp = {
 
 export type ProductsGridProp = {
   products: Products[];
-  isError: boolean;
-  error: Error | null;
-  isLoading: boolean;
   gridForm: "col" | "row";
 };
 

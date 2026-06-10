@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
-import type { ProductsGridProp } from "../types";
+import type { ProductsGridProp } from "../types/types";
 import { formatCurrency } from "../utilitis/money";
+import { use } from "react";
+import { productContext } from "../hooks/useProduct";
 
 const ProductsGrid = ({
   products,
-  isError,
-  isLoading,
-  error,
   gridForm,
 }: ProductsGridProp) => {
+
+  const { error, isError, isLoading} = use(productContext)
+
   if (isError) {
     return <p className="text-2xl text-center mt-5">{error?.message}</p>;
   }

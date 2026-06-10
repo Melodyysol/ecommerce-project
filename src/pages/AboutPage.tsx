@@ -1,16 +1,13 @@
 import { useEffect } from "react";
 import Header from "../components/Header";
-import type { AboutPageProps } from "../types";
+import type { AboutPageProps } from "../types/types";
 import { BsTwitter } from "react-icons/bs";
 import { FiInstagram } from "react-icons/fi";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa6";
 
-import DeveloperImage from "../assets/517.png";
+import DeveloperImage from "../assets/developerImg.png";
 const AboutPage = ({
-  theme,
-  setTheme,
-  carts,
   currentUser,
   setCurrentUser,
 }: AboutPageProps) => {
@@ -21,9 +18,6 @@ const AboutPage = ({
   return (
     <main>
       <Header
-        theme={theme}
-        setTheme={setTheme}
-        carts={carts}
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
       />

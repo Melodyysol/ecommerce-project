@@ -1,28 +1,28 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import Header from "./Header";
 import { Link, useParams } from "react-router-dom";
-import type { ItemPageProp } from "../types";
+import type { ItemPageProp } from "../types/types";
 import Toast from "./Toast";
 import { formatCurrency } from "../utilitis/money";
+import { CartContext } from "../hooks/useCart";
+import { productContext } from "../hooks/useProduct";
 
 const Item = ({
-  theme,
-  setTheme,
-  products,
-  carts,
-  addToBag,
   setQuantity,
   quantity,
   currentUser,
   setCurrentUser,
   toasts,
-  setToasts
+  setToasts,
 }: ItemPageProp) => {
+  const { products } = use(productContext);
+
   const params = useParams<{ id: string }>();
 
+  const { dispatch } = use(CartContext);
+
   const itemId = params.id!;
-  
 
   const filteredItem = products.find((item) => String(item.id) === itemId);
 
@@ -61,13 +61,7 @@ const Item = ({
 
   return (
     <main>
-      <Header
-        theme={theme}
-        setTheme={setTheme!}
-        carts={carts}
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-      />
+      <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
       <section className="w-10/12 mx-auto py-5 rounded-md mt-10">
         <div>
           <Link to="/" className="hover:underline">
@@ -88,11 +82,15 @@ const Item = ({
             className="w-full md:w-1/2 h-96 object-cover rounded-md"
           />
           <div className="flex flex-col gap-5">
-            <h1 className="text-3xl font-semibold capitalize">{filteredItem.name}</h1>
+            <h1 className="text-3xl font-semibold capitalize">
+              {filteredItem.name}
+            </h1>
             <h2 className="text-xl text-base-300 font-semibold uppercase">
               {filteredItem.company}
             </h2>
-            <p className="text-base-content text-2xl">{formatCurrency(filteredItem.price)}</p>
+            <p className="text-base-content text-2xl">
+              {formatCurrency(filteredItem.price)}
+            </p>
             <p>{filteredItem.description}</p>
 
             <div>
@@ -129,7 +127,12 @@ const Item = ({
             </div>
 
             <button
-              onClick={() => addToBag(filteredItem, activeColor)}
+              onClick={() =>
+                dispatch({
+                  type: "ADD_ITEM",
+                  payload: { filteredItem, activeColor, quantity },
+                })
+              }
               className="btn btn-secondary btn-lg w-max my-5 uppercase"
             >
               Add to Bag
