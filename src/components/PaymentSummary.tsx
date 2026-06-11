@@ -2,18 +2,21 @@ import { Link } from "react-router-dom";
 import { formatCurrency } from "../utilitis/money";
 import { useContext } from "react";
 import { CartContext } from "../hooks/useCart";
+import { UserContext } from "../hooks/user";
 
 const PaymentSummary = ({
   isShipping,
-  currentUser,
   checkoutIsUsingPayment,
 }: {
   isShipping: boolean;
-  currentUser: { username: string; email: string } | null;
   checkoutIsUsingPayment?: boolean;
 }) => {
+  const { carts } = useContext(CartContext);
+  const currentUser = useContext(UserContext);
 
-  const {carts} = useContext(CartContext)
+  if (!currentUser) {
+    throw new Error("useUser must be used within UserProvider");
+  }
 
   let subtotal = 0;
   const shippingPrice = isShipping ? 500 : 0;
@@ -51,13 +54,13 @@ const PaymentSummary = ({
         </p>
       </div>
 
-      {currentUser?.username === "demo user" && (
+      {currentUser.user?.userId === "demo" && (
         <Link to="/login" className="btn btn-primary btn-md uppercase">
           "Please login"
         </Link>
       )}
 
-      {currentUser?.username &&
+      {currentUser.user?.userId &&
         (checkoutIsUsingPayment === undefined || !checkoutIsUsingPayment) && (
           <Link
             to="/checkout"

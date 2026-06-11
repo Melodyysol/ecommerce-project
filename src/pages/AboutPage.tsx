@@ -1,26 +1,19 @@
 import { useEffect } from "react";
 import Header from "../components/Header";
-import type { AboutPageProps } from "../types/types";
 import { BsTwitter } from "react-icons/bs";
 import { FiInstagram } from "react-icons/fi";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa6";
 
 import DeveloperImage from "../assets/developerImg.png";
-const AboutPage = ({
-  currentUser,
-  setCurrentUser,
-}: AboutPageProps) => {
+const AboutPage = () => {
   useEffect(() => {
     document.title = "About";
   }, []);
 
   return (
     <main>
-      <Header
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-      />
+      <Header />
       <section className="w-10/12 mx-auto mt-20 text-base-content">
         <h1 className="text-center text-4xl md:text-6xl font-bold">
           We love{" "}
@@ -95,19 +88,35 @@ const AboutPage = ({
           <p className="mt-1">Phone: +234 80 3825 7481</p>
           <div className="mt-1 flex justify-center gap-6 items-center">
             Socials:{" "}
-            <a target="_blank" href="https://instagram.com/issaabdulwaris212/" className="link link-primary">
+            <a
+              target="_blank"
+              href="https://instagram.com/issaabdulwaris212/"
+              className="link link-primary"
+            >
               <FiInstagram />
             </a>{" "}
             |{" "}
-            <a target="_blank" href="https://www.linkedin.com/in/issa-abdulwaris-b4329639b/" className="link link-primary">
+            <a
+              target="_blank"
+              href="https://www.linkedin.com/in/issa-abdulwaris-b4329639b/"
+              className="link link-primary"
+            >
               <FaLinkedinIn />
             </a>{" "}
             |{" "}
-            <a target="_blank" href="https://x.com/melody_shiller" className="link link-primary">
+            <a
+              target="_blank"
+              href="https://x.com/melody_shiller"
+              className="link link-primary"
+            >
               <BsTwitter />
             </a>{" "}
             |{" "}
-            <a target="_blank" href="https://github.com/Melodyysol" className="link link-primary">
+            <a
+              target="_blank"
+              href="https://github.com/Melodyysol"
+              className="link link-primary"
+            >
               <BsGithub />
             </a>
           </div>

@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Header from "./Header";
 import { Link, useParams } from "react-router-dom";
@@ -7,28 +7,27 @@ import Toast from "./Toast";
 import { formatCurrency } from "../utilitis/money";
 import { CartContext } from "../hooks/useCart";
 import { productContext } from "../hooks/useProduct";
+import { ToastContext } from "../hooks/useToast";
 
-const Item = ({
-  setQuantity,
-  quantity,
-  currentUser,
-  setCurrentUser,
-  toasts,
-  setToasts,
-}: ItemPageProp) => {
-  const { products } = use(productContext);
+const Item = ({ setQuantity, quantity }: ItemPageProp) => {
+  const { products } = useContext(productContext);
+  const toastContext = useContext(ToastContext);
+
+  if (!toastContext) {
+    throw new Error("toastContext must be provided");
+  }
+
+  // if (!toastContext) {
+  //   throw new Error("toastContext must be provided");
+  // }
 
   const params = useParams<{ id: string }>();
 
-  const { dispatch } = use(CartContext);
+  const { dispatch } = useContext(CartContext);
 
   const itemId = params.id!;
 
   const filteredItem = products.find((item) => String(item.id) === itemId);
-
-  const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
 
   const [activeColor, setActiveColor] = useState<string>(() => {
     if (filteredItem && filteredItem.colors && filteredItem.colors.length > 0) {
@@ -61,7 +60,7 @@ const Item = ({
 
   return (
     <main>
-      <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      <Header />
       <section className="w-10/12 mx-auto py-5 rounded-md mt-10">
         <div>
           <Link to="/" className="hover:underline">
@@ -127,12 +126,22 @@ const Item = ({
             </div>
 
             <button
-              onClick={() =>
+              onClick={() => {
                 dispatch({
                   type: "ADD_ITEM",
                   payload: { filteredItem, activeColor, quantity },
-                })
-              }
+                });
+
+                const newToast = {
+                  id: crypto.randomUUID(),
+                  message: "Item added to cart",
+                };
+
+                toastContext.dispatch({
+                  type: "success",
+                  payload: newToast,
+                });
+              }}
               className="btn btn-secondary btn-lg w-max my-5 uppercase"
             >
               Add to Bag
@@ -141,12 +150,17 @@ const Item = ({
         </div>
       </section>
       <div className=" gap-4 flex flex-col fixed top-5 left-0 right-0 pointer-events-none">
-        {toasts.map((toast) => (
+        {toastContext.toasts.map((toast) => (
           <Toast
             key={toast.id}
             message={toast.message}
             type={toast.type}
-            onClose={() => removeToast(toast.id)}
+            onClose={() => {
+              toastContext.dispatch({
+                type: "removeToast",
+                payload: { id: toast.id },
+              });
+            }}
           />
         ))}
       </div>

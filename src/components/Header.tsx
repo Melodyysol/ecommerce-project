@@ -1,14 +1,20 @@
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
-import type { HeaderProps } from "../types/types";
 import ThemeProvider from "../contexts/ThemeContext";
+import { UserContext } from "../hooks/user";
+import {  useContext } from "react";
 
-const Header = ({ currentUser, setCurrentUser }: HeaderProps) => {
+const Header = () => {
   const navigate = useNavigate();
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("useUser must be used within UserProvider");
+  }
 
   const handleLogout = () => {
-    setCurrentUser(null);
-    window.localStorage.removeItem("currentUser");
+    context?.setUser(null);
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
@@ -16,12 +22,12 @@ const Header = ({ currentUser, setCurrentUser }: HeaderProps) => {
     <>
       <header className="bg-neutral text-neutral-content p-2 flex">
         <div className="flex mx-auto justify-center md:justify-end w-4/5 items-center gap-4">
-          {currentUser ? (
+          {context.user ? (
             <>
               <h1 className="text-[12px] sm:text-sm text-gray-400">
                 Hello!{" "}
-                {currentUser.username.split(" ")[0] ||
-                  currentUser.username.split("@")[0]}
+                {context.user.username.split(" ")[0] ||
+                  context.user.username.split("@")[0]}
               </h1>
 
               <button
@@ -50,7 +56,7 @@ const Header = ({ currentUser, setCurrentUser }: HeaderProps) => {
         </div>
       </header>
       <ThemeProvider>
-        <NavBar currentUser={currentUser} />
+        <NavBar />
       </ThemeProvider>
     </>
   );

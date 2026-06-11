@@ -1,4 +1,4 @@
-import { use, useEffect, useRef } from "react";
+import { useContext, useEffect } from "react";
 import Header from "../../components/Header";
 import PaymentSummary from "../../components/PaymentSummary";
 import type { CheckoutPageProps } from "../../types/types";
@@ -6,17 +6,24 @@ import { formatCurrency } from "../../utilitis/money";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { useNavigate } from "react-router-dom";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { CartContext } from "../../hooks/useCart";
+import { ToastContext } from "../../hooks/useToast";
 
-const CheckoutPage = ({
-  currentUser,
-  setCurrentUser,
-  isShipping,
-  setOrder,
-}: CheckoutPageProps) => {
+type FormData = {
+  name: string;
+  address: string;
+};
+
+const CheckoutPage = ({ isShipping, setOrder }: CheckoutPageProps) => {
   const navigate = useNavigate();
 
-  const {carts, dispatch} = use(CartContext)
+  const { carts, dispatch } = useContext(CartContext);
+  const toastContext = useContext(ToastContext);
+
+  if (!toastContext) {
+    throw new Error("toastContext must be provided");
+  }
 
   dayjs.extend(advancedFormat);
 
@@ -26,9 +33,6 @@ const CheckoutPage = ({
   useEffect(() => {
     document.title = "Checkout";
   }, []);
-
-  const nameRef = useRef<HTMLInputElement>(null);
-  const addressRef = useRef<HTMLInputElement>(null);
 
   let subtotal = 0;
   const shippingPrice = isShipping ? 500 : 0;
@@ -42,10 +46,17 @@ const CheckoutPage = ({
   const totalOrderCost = subtotal + shippingPrice + taxPrice;
   const cost = formatCurrency(totalOrderCost);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const name = nameRef.current!.value;
-    const address = addressRef.current!.value;
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormData>({
+    mode: "onChange",
+  });
+
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    const name = data.name;
+    const address = data.address;
 
     setOrder((prev) => [
       ...prev,
@@ -59,15 +70,12 @@ const CheckoutPage = ({
       },
     ]);
     navigate("/order");
-    dispatch({type: "CLEAR_CART"});
+    dispatch({ type: "CLEAR_CART" });
   };
 
   return (
     <main>
-      <Header
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-      />
+      <Header />
       <section>
         <div className="w-10/12 mx-auto mt-20">
           <h1 className="capitalize text-3xl  text-base-content">
@@ -80,44 +88,66 @@ const CheckoutPage = ({
         <section className="w-10/12 mx-auto lg:grid lg:item-start lg:grid-cols-2 lg:justify-between">
           <div className="mt-10 flex flex-col gap-5">
             <h4 className="text-xl text-base-content">Shipping Information</h4>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-5"
+            >
               <div>
                 <label htmlFor="fname" className="capitarize label block mb-2">
                   First Name
                 </label>
                 <input
-                  ref={nameRef}
                   type="text"
                   id="fname"
                   className="input input-lg w-full bg-base-200"
-                  required
+                  {...register("name", {
+                    required: "First name is require",
+                    minLength: {
+                      value: 3,
+                      message: "First name must be at least 3 characters",
+                    },
+                  })}
                 />
+                {errors.name && (
+                  <p className="text-error mt-2">{errors.name.message}</p>
+                )}
               </div>
               <div>
-                <label htmlFor="fname" className="capitarize label block mb-2">
+                <label
+                  htmlFor="address"
+                  className="capitarize label block mb-2"
+                >
                   Adress
                 </label>
                 <input
-                  ref={addressRef}
                   type="text"
                   id="address"
                   className="input input-lg w-full bg-base-200"
-                  required
+                  {...register("address", {
+                    required: "address is require",
+                    minLength: {
+                      value: 10,
+                      message: "Address must be at least 10 characters",
+                    },
+                  })}
                 />
+                {errors.address && (
+                  <p className="text-error mt-2">{errors.address.message}</p>
+                )}
               </div>
 
               <button
                 type="submit"
-                className="btn btn-primary btn-lg uppercase btn-block"
+                disabled={!isValid || isSubmitting}
+                className={`btn btn-primary btn-lg uppercase btn-block ${isSubmitting && "btn-ghost"}`}
               >
-                Place an order
+                {isSubmitting ? "Submitting" : "Place an order"}
               </button>
             </form>
           </div>
           <PaymentSummary
             checkoutIsUsingPayment={true}
             isShipping={isShipping}
-            currentUser={currentUser}
           />
         </section>
       )}

@@ -1,15 +1,11 @@
-import { use, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import FormGrid from "./FormGrid";
 import RenderProducts from "./RenderProducts";
 import type { FormGridData, ProductPageProps } from "../../types/types";
 import { productContext } from "../../hooks/useProduct";
 
-const ProductPage = ({
-  setIsShipping,
-  currentUser,
-  setCurrentUser,
-}: ProductPageProps) => {
+const ProductPage = ({ setIsShipping }: ProductPageProps) => {
   const [submitedData, setSubmitedData] = useState<FormGridData>({
     search: "",
     categoryRef: "",
@@ -18,7 +14,7 @@ const ProductPage = ({
     range: "",
   });
 
-  const {products, isLoading, isError, error} = use(productContext)
+  const { products, isLoading, isError, error } = useContext(productContext);
 
   const filteredProducts = products.filter((product) => {
     // 1. Case-insensitive search match
@@ -63,10 +59,7 @@ const ProductPage = ({
 
   return (
     <main>
-      <Header
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-      />
+      <Header />
       {isError ? (
         <div className="w-screen h-screen flex">
           <div className="m-auto flex flex-col items-center gap-5 w-4/5">

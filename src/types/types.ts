@@ -56,82 +56,25 @@ export type HeaderProps = {
   setCurrentUser: (user: { username: string; email: string } | null) => void;
 };
 
-export type HomePageProps = {
-  currentUser: { username: string; email: string } | null;
-  setCurrentUser: (user: { username: string; email: string } | null) => void;
-  toasts: {
-    message: string;
-    type: "success" | "error";
-    id: number;
-  }[];
-  setToasts: React.Dispatch<
-    React.SetStateAction<
-      {
-        message: string;
-        type: "error" | "success";
-        id: number;
-      }[]
-    >
-  >;
-};
-
 export type ProductPageProps = {
   setIsShipping: React.Dispatch<React.SetStateAction<boolean>>;
-  currentUser: { username: string; email: string } | null;
-  setCurrentUser: (user: { username: string; email: string } | null) => void;
 };
 
 export type CartPageProps = {
   isShipping: boolean;
-  currentUser: { username: string; email: string } | null;
-  setCurrentUser: (user: { username: string; email: string } | null) => void;
-  toasts: {
-    message: string;
-    type: "success" | "error";
-    id: number;
-  }[];
-  setToasts: React.Dispatch<
-    React.SetStateAction<
-      {
-        message: string;
-        type: "error" | "success";
-        id: number;
-      }[]
-    >
-  >;
 };
 
 export type CheckoutPageProps = {
   isShipping: boolean;
-  currentUser: { username: string; email: string } | null;
-  setCurrentUser: (user: { username: string; email: string } | null) => void;
   setOrder: React.Dispatch<React.SetStateAction<Order[]>>;
 };
 export type OrderPageProps = {
-  currentUser: { username: string; email: string } | null;
-  setCurrentUser: (user: { username: string; email: string } | null) => void;
   orders: Order[];
 };
 
 export type ItemPageProp = {
   setQuantity: (quantity: number) => void;
   quantity: number;
-  currentUser: { username: string; email: string } | null;
-  setCurrentUser: (user: { username: string; email: string } | null) => void;
-  toasts: {
-    message: string;
-    type: "success" | "error";
-    id: number;
-  }[];
-  setToasts: React.Dispatch<
-    React.SetStateAction<
-      {
-        message: string;
-        type: "error" | "success";
-        id: number;
-      }[]
-    >
-  >;
 };
 
 export type ProductsGridProp = {
@@ -154,22 +97,10 @@ export type FormGridData = {
   range: string;
 };
 
-export type FormProps = {
-  setCurrentUser: (user: { username: string; email: string } | null) => void;
-  toasts: {
-    message: string;
-    type: "success" | "error";
-    id: number;
-  }[];
-  setToasts: React.Dispatch<
-    React.SetStateAction<
-      {
-        message: string;
-        type: "error" | "success";
-        id: number;
-      }[]
-    >
-  >;
-};
+export type FormData = { userId: string; username?: string; email: string; password: string };
 
-export type FormData = { username?: string; email: string; password: string };
+export type User = {
+  userId: string;
+  username: string;
+  email: string;
+};

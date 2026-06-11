@@ -1,6 +1,7 @@
 import type { Cart, Products } from "./types";
 
 export type CartAction =
+  | { type: "LOAD_CART"; payload: Cart[] }
   | {
       type: "ADD_ITEM";
       payload: {

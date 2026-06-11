@@ -1,16 +1,17 @@
-import { useEffect, useState, use } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import { BsCart3 } from "react-icons/bs";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { RiMenu3Fill } from "react-icons/ri";
 import { Link, NavLink } from "react-router-dom";
-import type { NavBarProps } from "../types/types";
 import { CartContext } from "../hooks/useCart";
 import { ThemeContext } from "../hooks/useTheme";
+import { UserContext } from "../hooks/user";
 
-const NavBar = ({ currentUser }: NavBarProps) => {
-  const {carts} = use(CartContext);
-  const {theme, toggleTheme} = use(ThemeContext);
+const NavBar = () => {
+  const { carts } = useContext(CartContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const currentUser = useContext(UserContext);
 
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
@@ -25,6 +26,10 @@ const NavBar = ({ currentUser }: NavBarProps) => {
       window.removeEventListener("click", handleClick);
     };
   }, []);
+
+  if (!currentUser) {
+    throw new Error("useUser must be used within UserProvider");
+  }
 
   carts.map((cart) => {
     totalQuantity = totalQuantity + cart.quantity;
@@ -78,7 +83,7 @@ const NavBar = ({ currentUser }: NavBarProps) => {
                 cart
               </NavLink>
             </li>
-            {currentUser && currentUser.username !== "demo user" && (
+            {currentUser.user && currentUser.user.username !== "demo" && (
               <>
                 <li>
                   <NavLink to="/checkout" className={activeLink}>

@@ -1,66 +1,54 @@
-import { use, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Header from "../../components/Header";
 import RenderHomePage from "./RenderHomePage";
-import type { HomePageProps } from "../../types/types";
 import Toast from "../../components/Toast";
 import { productContext } from "../../hooks/useProduct";
+import { UserContext } from "../../hooks/user";
+import { ToastContext } from "../../hooks/useToast";
 
-const HomePage = ({
-  currentUser,
-  setCurrentUser,
-  toasts,
-  setToasts,
-}: HomePageProps) => {
+const HomePage = () => {
   useEffect(() => {
     document.title = "Home page";
   }, []);
 
-  const {isError, error} = use(productContext)
+  const { isError, error } = useContext(productContext);
+  const userContext = useContext(UserContext);
+  const toastContext = useContext(ToastContext);
 
-  useEffect(() => {
-    if (currentUser) {
-      setToasts([
-        {
-          message: `Welcome back, ${currentUser.username}!`,
-          type: "success",
-          id: Date.now(),
-        },
-      ]);
-    } else {
-      setToasts([
-        {
-          message: "Welcome to our store! Please log in or register.",
-          type: "success",
-          id: Date.now(),
-        },
-      ]);
-    }
-  }, [currentUser, setToasts]);
+  if (!userContext || !toastContext) {
+    throw new Error("useUser must be used within UserProvider");
+  }
 
   useEffect(() => {
     if (isError && error) {
-      setToasts((prev) => [
-        ...prev,
-        { message: error.message, type: "error", id: Date.now() },
-      ]);
+      toastContext.dispatch({
+        type: "error",
+        payload: { message: error.message, id: crypto.randomUUID() },
+      });
+      localStorage.setItem(
+        "toast",
+        JSON.stringify({ message: error.message, id: crypto.randomUUID() }),
+      );
     }
-  }, [isError, error, setToasts]);
-
-  const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
+  }, [isError, error]);
 
   return (
     <main className="bg-base-100 text-base-content min-h-screen pb-15">
-      <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      <Header />
       <RenderHomePage />
       <div className=" gap-4 flex flex-col fixed top-5 left-0 right-0 pointer-events-none">
-        {toasts.map((toast) => (
+        {toastContext.toasts.map((toast) => (
           <Toast
             key={toast.id}
             message={toast.message}
             type={toast.type}
-            onClose={() => removeToast(toast.id)}
+            onClose={() => {
+              toastContext.dispatch({
+                type: "removeToast",
+                payload: { id: toast.id },
+              });
+              localStorage.removeItem("toast");
+            }}
           />
         ))}
       </div>

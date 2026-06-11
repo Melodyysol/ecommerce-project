@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { type FormData } from "../../types/types";
 import Toast from "../../components/Toast";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { UserContext } from "../../hooks/user";
+import { ToastContext } from "../../hooks/useToast";
 
 const formInputs: { id: number; name: string }[] = [
   {
@@ -15,39 +17,26 @@ const formInputs: { id: number; name: string }[] = [
   },
 ];
 
-const Form = ({
-  user,
-  setCurrentUser,
-  toasts,
-  setToasts,
-}: {
-  user: "register" | "login";
-  setCurrentUser: (user: { username: string; email: string } | null) => void;
-  toasts: {
-    message: string;
-    type: "success" | "error";
-    id: number;
-  }[];
-  setToasts: React.Dispatch<
-    React.SetStateAction<
-      {
-        message: string;
-        type: "error" | "success";
-        id: number;
-      }[]
-    >
-  >;
-}) => {
+const Form = ({ user }: { user: "register" | "login" }) => {
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    mode: "onChange",
+  });
+
+  const toastContext = useContext(ToastContext);
 
   const navigate = useNavigate();
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
+
+  const userContext = useContext(UserContext);
+  if (!userContext || !toastContext) {
+    throw new Error("useUser must be used within UserProvider");
+  }
 
   const [registeredData, setRegisteredData] = useState<FormData[]>(() => {
     const savedData = window.localStorage.getItem("formData");
@@ -64,14 +53,30 @@ const Form = ({
         });
         return;
       }
-      const username = data.username || "demo user";
+      const username = data.username || "demo";
       const email = data.email;
 
-      setRegisteredData((prev) => [...prev, data]);
-      setCurrentUser({ username, email });
+      const userId = crypto.randomUUID();
+      const newUserData = {
+        ...data,
+        userId: userId,
+      };
 
-      localStorage.setItem("currentUser", JSON.stringify({ username, email }));
+      setRegisteredData((prev) => [...prev, newUserData]);
+
+      const newUser = { userId, username, email };
+      userContext.setUser(newUser);
+
+      localStorage.setItem("user", JSON.stringify(newUser));
       navigate(fromPage, { replace: true });
+      const newToast = {
+        id: crypto.randomUUID(),
+        message: "Account created successfully",
+      };
+      toastContext.dispatch({
+        type: "success",
+        payload: newToast,
+      });
     } else {
       const userData = registeredData.find((d) => d.email === data.email);
       if (!userData) {
@@ -86,22 +91,36 @@ const Form = ({
           type: "manual",
           message: "Incorrect password.",
         });
+        const newToast = {
+          id: crypto.randomUUID(),
+          message: "Incorrect password.",
+        };
+        toastContext.dispatch({
+          type: "error",
+          payload: newToast,
+        });
         return;
       }
-      const loggedInUser = {
-        username: userData.username || "demo user",
+      const userLoggedIn = {
+        userId: userData.userId,
+        username: userData.username || "demo",
         email: userData.email,
       };
 
-      setCurrentUser(loggedInUser);
+      userContext.setUser(userLoggedIn);
+      localStorage.setItem("user", JSON.stringify(userLoggedIn));
 
-      localStorage.setItem("currentUser", JSON.stringify(loggedInUser));
       navigate(fromPage, { replace: true });
-    }
-  };
 
-  const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+      const newToast = {
+        message: `Welcome back, ${userLoggedIn.username}!`,
+        id: crypto.randomUUID(),
+      };
+      toastContext.dispatch({
+        type: "success",
+        payload: newToast,
+      });
+    }
   };
 
   useEffect(() => {
@@ -148,14 +167,20 @@ const Form = ({
                 formInput.name === "email"
                   ? "Email must be provided"
                   : "Password must be provided",
-              pattern: formInput.name === "email" ? {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address",
-              } : undefined,
-              minLength: formInput.name === "password" ? {
-                value: 8,
-                message: "Password must be atleast 8 characters",
-              } : undefined,
+              pattern:
+                formInput.name === "email"
+                  ? {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    }
+                  : undefined,
+              minLength:
+                formInput.name === "password"
+                  ? {
+                      value: 8,
+                      message: "Password must be atleast 8 characters",
+                    }
+                  : undefined,
             })}
             className="input input-lg bg-base-200"
           />
@@ -170,7 +195,7 @@ const Form = ({
 
       <div>
         <button
-          disabled={!isValid}
+          disabled={!isValid || isSubmitting}
           type="submit"
           className={
             isSubmitting
@@ -185,17 +210,21 @@ const Form = ({
       {user === "login" && (
         <button
           type="button"
-          disabled={isSubmitting}
+          disabled={!isValid || isSubmitting}
           className={
             isSubmitting
               ? "btn btn-md btn-neutral btn-block uppercase"
               : "btn btn-md btn-secondary btn-block uppercase"
           }
           onClick={() => {
-            setCurrentUser({ username: "demo user", email: "demo@user.com" });
+            userContext.setUser({
+              userId: "demo",
+              username: "demo",
+              email: "demo@user.com",
+            });
             window.localStorage.setItem(
-              "currentUser",
-              JSON.stringify({ username: "demo user", email: "demo@user.com" }),
+              "user",
+              JSON.stringify({ userId: "demo", username: "demo", email: "demo@user.com" }),
             );
             navigate(fromPage, { replace: true });
           }}
@@ -213,12 +242,17 @@ const Form = ({
         </Link>
       </p>
       <div className=" gap-4 flex flex-col fixed top-5 left-0 right-0 pointer-events-none">
-        {toasts.map((toast) => (
+        {toastContext.toasts.map((toast) => (
           <Toast
             key={toast.id}
             message={toast.message}
             type={toast.type}
-            onClose={() => removeToast(toast.id)}
+            onClose={() => {
+              toastContext.dispatch({
+                type: "removeToast",
+                payload: { id: toast.id },
+              });
+            }}
           />
         ))}
       </div>

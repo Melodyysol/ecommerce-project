@@ -54,6 +54,8 @@ export const cartReducer = (state: Cart[], action: CartAction) => {
       );
     case "CLEAR_CART":
       return [];
+    case "LOAD_CART":
+      return action.payload;
 
     default:
       return state;

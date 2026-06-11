@@ -1,45 +1,31 @@
-import { use } from "react";
+import { useContext } from "react";
 import Toast from "../../components/Toast";
 import { formatCurrency } from "../../utilitis/money";
 import { CartContext } from "../../hooks/useCart";
+import { ToastContext } from "../../hooks/useToast";
 
-const CartItem = ({
-  toasts,
-  setToasts,
-}: {
-  toasts: {
-    message: string;
-    type: "success" | "error";
-    id: number;
-  }[];
-  setToasts: React.Dispatch<
-    React.SetStateAction<
-      {
-        message: string;
-        type: "error" | "success";
-        id: number;
-      }[]
-    >
-  >;
-}) => {
-  const {carts, dispatch} = use(CartContext)
+const CartItem = () => {
+  const { carts, dispatch } = useContext(CartContext);
 
-  
+  const toastContext = useContext(ToastContext);
+  if (!toastContext) {
+    throw new Error("toastContext must be provided.");
+  }
 
   const removeCart = (id: string, color: string) => {
     dispatch({ type: "REMOVE_ITEM", payload: { id, color } });
   };
 
-  const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-    setToasts([
-      {
-        message: "Item removed from cart",
-        type: "success",
-        id: parseInt(crypto.randomUUID()),
-      },
-    ]);
-  };
+  // const removeToast = (id: number) => {
+  //   toastContext.dispatch((prev) => prev.filter((t) => t.id !== id));
+  //   toastContext.dispatch([
+  //     {
+  //       message: "Item removed from cart",
+  //       type: "success",
+  //       id: crypto.randomUUID(),
+  //     },
+  //   ]);
+  // };
 
   const updateCartQuantity = (
     id: string,
@@ -98,7 +84,18 @@ const CartItem = ({
               ))}
             </select>
             <button
-              onClick={() => removeCart(cart.id, cart.color)}
+              onClick={() => {
+                removeCart(cart.id, cart.color);
+                const newToast = {
+                  id: crypto.randomUUID(),
+                  message: "Item removed from cart",
+                };
+                toastContext.dispatch({
+                  type: "success",
+                  payload: newToast,
+                });
+                
+              }}
               className="text-primary hover:underline cursor-pointer"
             >
               remove
@@ -112,12 +109,18 @@ const CartItem = ({
       ))}
 
       <div className=" gap-4 flex flex-col fixed top-5 left-0 right-0 pointer-events-none">
-        {toasts.map((toast) => (
+        {toastContext.toasts.map((toast) => (
           <Toast
             key={toast.id}
             message={toast.message}
             type={toast.type}
-            onClose={() => removeToast(toast.id)}
+            onClose={() => {
+              toastContext.dispatch({
+                type: "removeToast",
+                payload: { id: toast.id },
+              });
+              
+            }}
           />
         ))}
       </div>

@@ -1,12 +1,12 @@
 // import projects from "../../data/projects"
 import { Link } from "react-router-dom";
 import ProductsGrid from "../../components/ProductsGrid";
-import { use } from "react";
+import { useContext } from "react";
 import { productContext } from "../../hooks/useProduct";
 
 const RenderHomePage = () => {
 
-  const {products, isLoading, isError, error} = use(productContext)
+  const {products, isLoading, isError, error} = useContext(productContext)
 
   if (isLoading) {
     return (

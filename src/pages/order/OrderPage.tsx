@@ -2,13 +2,8 @@ import { useReducer, Fragment } from "react";
 import Header from "../../components/Header";
 import type { OrderPageProps } from "../../types/types";
 
-const OrderPage = ({
-  currentUser,
-  setCurrentUser,
-  orders,
-}: OrderPageProps) => {
-
-  const ITEMS_PER_PAGE = 10
+const OrderPage = ({ orders }: OrderPageProps) => {
+  const ITEMS_PER_PAGE = 10;
 
   const totalPages = Math.round(orders.length / ITEMS_PER_PAGE);
   const pages = Array.from({ length: totalPages }, (_, i) => String(i + 1));
@@ -24,7 +19,6 @@ const OrderPage = ({
     paginatedOrders: orders.slice(0, ITEMS_PER_PAGE),
   };
 
-
   const reducer = (
     state: typeof initialState,
     action: (typeof pageButton)[number],
@@ -36,7 +30,10 @@ const OrderPage = ({
         return {
           ...state,
           currentPage: prevPage,
-          paginatedOrders: orders.slice((prevPage - 1) * ITEMS_PER_PAGE, prevPage * ITEMS_PER_PAGE),
+          paginatedOrders: orders.slice(
+            (prevPage - 1) * ITEMS_PER_PAGE,
+            prevPage * ITEMS_PER_PAGE,
+          ),
         };
       }
       case "next": {
@@ -45,7 +42,10 @@ const OrderPage = ({
         return {
           ...state,
           currentPage: nextPage,
-          paginatedOrders: orders.slice((nextPage - 1) * ITEMS_PER_PAGE, nextPage * ITEMS_PER_PAGE),
+          paginatedOrders: orders.slice(
+            (nextPage - 1) * ITEMS_PER_PAGE,
+            nextPage * ITEMS_PER_PAGE,
+          ),
         };
       }
 
@@ -56,7 +56,10 @@ const OrderPage = ({
         return {
           ...state,
           currentPage: targetPage,
-          paginatedOrders: orders.slice((targetPage - 1) * ITEMS_PER_PAGE, targetPage * ITEMS_PER_PAGE),
+          paginatedOrders: orders.slice(
+            (targetPage - 1) * ITEMS_PER_PAGE,
+            targetPage * ITEMS_PER_PAGE,
+          ),
         };
       }
     }
@@ -66,10 +69,7 @@ const OrderPage = ({
 
   return (
     <main>
-      <Header
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-      />
+      <Header />
       <section>
         <div className="w-10/12 mx-auto mt-20">
           <h1 className="capitalize text-3xl  text-base-content">
