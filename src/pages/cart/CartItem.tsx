@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import Toast from "../../components/Toast";
-import { formatCurrency } from "../../utilitis/money";
+import { formatCurrency } from "../../utilities/money";
 import { CartContext } from "../../hooks/useCart";
 import { ToastContext } from "../../hooks/useToast";
 

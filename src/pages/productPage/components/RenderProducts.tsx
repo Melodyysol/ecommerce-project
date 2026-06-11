@@ -1,8 +1,8 @@
 import { CgMenu, CgMenuGridR } from "react-icons/cg";
 
-import ProductsGrid from "../../components/ProductsGrid";
+import ProductsGrid from "../../../components/ProductsGrid";
 import {  useEffect, useReducer, useState } from "react";
-import type { Products } from "../../types/types";
+import type { Products } from "../../../types/types";
 
 const pageButton: ("1" | "2" | "3" | "next" | "prev")[] = [
   "prev",

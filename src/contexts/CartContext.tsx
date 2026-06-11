@@ -1,6 +1,6 @@
 import { useContext, useEffect, useReducer, type ReactNode } from "react";
 import { CartContext, cartReducer } from "../hooks/useCart";
-import { UserContext } from "../hooks/user";
+import { UserContext } from "../hooks/useUser";
 
 export const CartContextProvider = ({ children }: { children: ReactNode }) => {
   const context = useContext(UserContext);

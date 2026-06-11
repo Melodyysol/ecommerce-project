@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import Header from "../../components/Header";
 import PaymentSummary from "../../components/PaymentSummary";
 import type { CheckoutPageProps } from "../../types/types";
-import { formatCurrency } from "../../utilitis/money";
+import { formatCurrency } from "../../utilities/money";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { useNavigate } from "react-router-dom";

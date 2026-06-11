@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { ProductsGridProp } from "../types/types";
-import { formatCurrency } from "../utilitis/money";
+import { formatCurrency } from "../utilities/money";
 import { useContext } from "react";
 import { productContext } from "../hooks/useProduct";
 

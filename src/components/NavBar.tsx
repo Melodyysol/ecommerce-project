@@ -6,7 +6,7 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../hooks/useCart";
 import { ThemeContext } from "../hooks/useTheme";
-import { UserContext } from "../hooks/user";
+import { UserContext } from "../hooks/useUser";
 
 const NavBar = () => {
   const { carts } = useContext(CartContext);

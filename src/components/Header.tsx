@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import ThemeProvider from "../contexts/ThemeContext";
-import { UserContext } from "../hooks/user";
+import { UserContext } from "../hooks/useUser";
 import {  useContext } from "react";
 
 const Header = () => {

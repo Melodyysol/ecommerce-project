@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import FormGrid from "./FormGrid";
-import RenderProducts from "./RenderProducts";
+import RenderProducts from "./components/RenderProducts";
 import type { FormGridData, ProductPageProps } from "../../types/types";
 import { productContext } from "../../hooks/useProduct";
 

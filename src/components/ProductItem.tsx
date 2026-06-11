@@ -4,12 +4,12 @@ import Header from "./Header";
 import { Link, useParams } from "react-router-dom";
 import type { ItemPageProp } from "../types/types";
 import Toast from "./Toast";
-import { formatCurrency } from "../utilitis/money";
+import { formatCurrency } from "../utilities/money";
 import { CartContext } from "../hooks/useCart";
 import { productContext } from "../hooks/useProduct";
 import { ToastContext } from "../hooks/useToast";
 
-const Item = ({ setQuantity, quantity }: ItemPageProp) => {
+const ProductItem = ({ setQuantity, quantity }: ItemPageProp) => {
   const { products } = useContext(productContext);
   const toastContext = useContext(ToastContext);
 
@@ -168,4 +168,4 @@ const Item = ({ setQuantity, quantity }: ItemPageProp) => {
   );
 };
 
-export default Item;
+export default ProductItem;

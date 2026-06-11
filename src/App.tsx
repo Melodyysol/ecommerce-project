@@ -6,12 +6,12 @@ import HomePage from "./pages/homePage/HomePage";
 import AboutPage from "./pages/AboutPage";
 import CartPage from "./pages/cart/CartPage";
 import ProductPage from "./pages/productPage/ProductPage";
-import Item from "./components/Item";
+import ProductItem from "./components/ProductItem";
 import { type Order } from "./types/types";
 import Register from "./pages/loginForm/Register";
 import Login from "./pages/loginForm/Login";
 import ProtectedRoute from "./pages/cart/ProtectedRoute";
-import CheckoutPage from "./pages/checkout/CheckoutPage";
+import CheckoutPage from "./pages/checkout/checkoutPage";
 import OrderPage from "./pages/order/OrderPage";
 
 function App() {
@@ -46,7 +46,7 @@ function App() {
       />
       <Route
         path="/item/:id"
-        element={<Item quantity={quantity} setQuantity={setQuantity!} />}
+        element={<ProductItem quantity={quantity} setQuantity={setQuantity!} />}
       />
       <Route
         path="/checkout"

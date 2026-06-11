@@ -1,12 +1,13 @@
 import axios from "axios";
 import { productSchemaArrary } from "../schemas/productSchema";
 import type { Products } from "../types/types";
+import { getProductsEndpoint } from "../constants/api";
 
 export const fetchProducts = async (): Promise<Products[]> => {
   try {
-    const response = await axios.get(
-      "https://www.course-api.com/react-store-products",
-    );
+    const apiUrl = getProductsEndpoint();
+    
+    const response = await axios.get(apiUrl);
     // if (!response) throw new Error("Error in fetching data");
 
     const validatingProducts = productSchemaArrary.safeParse(response.data);

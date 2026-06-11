@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { type FormData } from "../../types/types";
 import Toast from "../../components/Toast";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { UserContext } from "../../hooks/user";
+import { UserContext } from "../../hooks/useUser";
 import { ToastContext } from "../../hooks/useToast";
 
 const formInputs: { id: number; name: string }[] = [

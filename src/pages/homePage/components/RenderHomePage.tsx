@@ -1,8 +1,8 @@
 // import projects from "../../data/projects"
 import { Link } from "react-router-dom";
-import ProductsGrid from "../../components/ProductsGrid";
+import ProductsGrid from "../../../components/ProductsGrid";
 import { useContext } from "react";
-import { productContext } from "../../hooks/useProduct";
+import { productContext } from "../../../hooks/useProduct";
 
 const RenderHomePage = () => {
 

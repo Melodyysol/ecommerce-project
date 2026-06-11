@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { FormGridData } from "../../types/types";
-import { formatCurrency } from "../../utilitis/money";
+import { formatCurrency } from "../../utilities/money";
 
 // const forms: Forms = [{
 //   name: 'search',

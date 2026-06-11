@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
 import Header from "../../components/Header";
-import RenderHomePage from "./RenderHomePage";
+import RenderHomePage from "./components/RenderHomePage";
 import Toast from "../../components/Toast";
 import { productContext } from "../../hooks/useProduct";
-import { UserContext } from "../../hooks/user";
+import { UserContext } from "../../hooks/useUser";
 import { ToastContext } from "../../hooks/useToast";
 
 const HomePage = () => {
@@ -30,7 +30,7 @@ const HomePage = () => {
         JSON.stringify({ message: error.message, id: crypto.randomUUID() }),
       );
     }
-  }, [isError, error]);
+  }, [isError, error, toastContext]);
 
   return (
     <main className="bg-base-100 text-base-content min-h-screen pb-15">

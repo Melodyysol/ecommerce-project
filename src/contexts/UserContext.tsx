@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { UserContext } from "../hooks/user";
+import { UserContext } from "../hooks/useUser";
 import type { User } from "../types/types";
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
