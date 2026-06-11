@@ -11,7 +11,7 @@ import { type Order } from "./types/types";
 import Register from "./pages/loginForm/Register";
 import Login from "./pages/loginForm/Login";
 import ProtectedRoute from "./pages/cart/ProtectedRoute";
-import CheckoutPage from "./pages/checkout/checkoutPage";
+import CheckoutPage from "./pages/checkout/CheckoutPage";
 import OrderPage from "./pages/order/OrderPage";
 
 function App() {

@@ -25,8 +25,8 @@ A modern ecommerce storefront built with React, TypeScript, Vite, and Tailwind C
 
 ### Prerequisites
 
-- Node.js 14 or later
-- npm
+- Node.js 18.0.0 or later
+- npm 9.0.0 or later
 
 ### Install dependencies
 
@@ -58,15 +58,21 @@ npm run preview
 ecommerce-project/
 ├── public/                  # Static assets
 ├── src/                     # Application source code
-│   ├── assets/              # Images and static resources
 │   ├── components/          # Reusable UI components
-│   ├── data/                # Static data and mock datasets
-│   ├── pages/               # Feature pages and routes
-│   ├── utilitis/            # Utility helpers
-│   ├── App.tsx
-│   ├── index.css
-│   ├── main.tsx
-│   └── types.ts
+│   ├── constants/           # Configuration files
+│   │   └── api.ts
+│   ├── contexts/            # React context providers for global state
+│   ├── hooks/               # Custom React hooks
+│   ├── pages/               # Feature pages and routing
+│   │   ├── homePage/
+│   │   │   ├── components/  # Home-specific UI elements
+│   │   │   └── HomePage.tsx
+│   │   └── productPage/
+│   │       ├── components/  # Product-specific UI elements
+│   │       └── ProductPage.tsx
+│   ├── services/            # API client and network requests
+│   ├── types/               # TypeScript type definitions and interfaces
+│   └── utilities/           # Pure helper functions
 ├── package.json
 ├── tsconfig.json
 ├── vite.config.ts
