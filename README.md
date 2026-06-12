@@ -8,6 +8,7 @@ A modern ecommerce storefront built with React, TypeScript, Vite, and Tailwind C
 - Shopping cart management with quantity controls
 - Authentication-ready page structure
 - Checkout experience with order summary
+- Browser favicon support from `public/favicon.svg`
 - Modular component architecture for maintainability
 
 ## Technology Stack
@@ -71,7 +72,7 @@ ecommerce-project/
 │   │       ├── components/  # Product-specific UI elements
 │   │       └── ProductPage.tsx
 │   ├── services/            # API client and network requests
-│   ├── types/               # TypeScript type definitions and interfaces
+│   ├── types/               # TypeScript type definitions and interfaces (grouped by feature)
 │   └── utilities/           # Pure helper functions
 ├── package.json
 ├── tsconfig.json
@@ -86,6 +87,14 @@ Contributions are welcome. To contribute:
 1. Fork the repository
 2. Create a new branch for your feature or fix
 3. Submit a pull request with a clear description
+
+## Contact
+
+- Email: [issaabdulwaris212@gmail.com](mailto:issaabdulwaris212@gmail.com)
+- Instagram: [@issaabdulwaris212](https://instagram.com/issaabdulwaris212/)
+- LinkedIn: [Issa Abdulwaris](https://www.linkedin.com/in/issa-abdulwaris-b4329639b/)
+- Twitter: [@melody_shiller](https://x.com/melody_shiller)
+- GitHub: [Melodyysol](https://github.com/Melodyysol)
 
 ## License
 

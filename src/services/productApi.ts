@@ -1,6 +1,6 @@
 import axios from "axios";
 import { productSchemaArrary } from "../schemas/productSchema";
-import type { Products } from "../types/types";
+import type { Products } from "../types/product";
 import { getProductsEndpoint } from "../constants/api";
 
 export const fetchProducts = async (): Promise<Products[]> => {

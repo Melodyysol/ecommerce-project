@@ -1,7 +1,7 @@
 // import type { Forms } from "../../types"
 
 import { useRef, useState } from "react";
-import type { FormGridData } from "../../types/types";
+import type { FormGridData } from "../../types/productPage";
 import { formatCurrency } from "../../utilities/money";
 
 // const forms: Forms = [{

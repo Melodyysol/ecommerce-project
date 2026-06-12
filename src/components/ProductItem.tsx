@@ -2,12 +2,13 @@ import { useContext, useEffect, useState } from "react";
 
 import Header from "./Header";
 import { Link, useParams } from "react-router-dom";
-import type { ItemPageProp } from "../types/types";
+import type { ItemPageProp } from "../types/productPage";
 import Toast from "./Toast";
 import { formatCurrency } from "../utilities/money";
 import { CartContext } from "../hooks/useCart";
 import { productContext } from "../hooks/useProduct";
 import { ToastContext } from "../hooks/useToast";
+import { motion } from "motion/react";
 
 const ProductItem = ({ setQuantity, quantity }: ItemPageProp) => {
   const { products } = useContext(productContext);
@@ -75,9 +76,10 @@ const ProductItem = ({ setQuantity, quantity }: ItemPageProp) => {
         {/* image and details */}
 
         <div className="flex flex-col md:flex-row gap-10 my-10">
-          <img
+          <motion.img
             src={filteredItem.image}
             alt={filteredItem.description}
+            layoutId={`product-image-${filteredItem.id}`}
             className="w-full md:w-1/2 h-96 object-cover rounded-md"
           />
           <div className="flex flex-col gap-5">

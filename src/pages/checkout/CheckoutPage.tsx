@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import Header from "../../components/Header";
 import PaymentSummary from "../../components/PaymentSummary";
-import type { CheckoutPageProps } from "../../types/types";
+import type { CheckoutPageProps } from "../../types/checkout";
 import { formatCurrency } from "../../utilities/money";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";

@@ -1,6 +1,6 @@
 import { useReducer, Fragment } from "react";
 import Header from "../../components/Header";
-import type { OrderPageProps } from "../../types/types";
+import type { OrderPageProps } from "../../types/order";
 
 const OrderPage = ({ orders }: OrderPageProps) => {
   const ITEMS_PER_PAGE = 10;

@@ -4,8 +4,9 @@ import Header from "../../components/Header";
 import CartItem from "./CartItem";
 import PaymentSummary from "../../components/PaymentSummary";
 import { CartContext } from "../../hooks/useCart";
+import type { CartPageProps } from "../../types/cart";
 
-const CartPage = ({ isShipping }: {isShipping: boolean}) => {
+const CartPage = ({ isShipping }: CartPageProps) => {
   useEffect(() => {
     document.title = "Cart";
   }, []);

@@ -1,4 +1,6 @@
-import type { Products } from "../types/types";
+import type { Products } from "../schemas/productSchema";
+
+export type { Products };
 
 export type ProductContextType = {
   products: Products[];

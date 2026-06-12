@@ -1,6 +1,6 @@
 import z from "zod";
 
-const productSchema = z.object({
+export const productSchema = z.object({
   id: z.string(),
   name: z.string(),
   image: z.string(),
@@ -12,3 +12,5 @@ const productSchema = z.object({
 });
 
 export const productSchemaArrary = z.array(productSchema);
+
+export type Products = z.infer<typeof productSchema>;

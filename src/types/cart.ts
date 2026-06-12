@@ -1,4 +1,14 @@
-import type { Cart, Products } from "./types";
+import type { Products } from "./product";
+
+export type Cart = {
+  id: string;
+  name: string;
+  image: string;
+  color: string;
+  company: string;
+  price: number;
+  quantity: number;
+};
 
 export type CartAction =
   | { type: "LOAD_CART"; payload: Cart[] }
@@ -18,6 +28,10 @@ export type CartAction =
   | {
       type: "CLEAR_CART";
     };
+
+export type CartPageProps = {
+  isShipping: boolean;
+};
 
 export type CartContextType = {
   carts: Cart[];

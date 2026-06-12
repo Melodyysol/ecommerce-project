@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import type { ProductsGridProp } from "../types/types";
+import type { ProductsGridProp } from "../types/productPage";
 import { formatCurrency } from "../utilities/money";
 import { useContext } from "react";
 import { productContext } from "../hooks/useProduct";
+import { motion } from "motion/react";
 
 const ProductsGrid = ({
   products,
@@ -45,9 +46,10 @@ const ProductsGrid = ({
           to={`/item/${product.id}`}
           className={`bg-base-100 shadow hover:shadow-2xl rounded-2xl p-4 pb-6 ${gridForm === "row" && "grid md:grid-cols-[150px_1fr] gap-y-3 gap-x-6 items-start"}`}
         >
-          <img
+          <motion.img
             src={product.image}
             alt={product.description}
+            layoutId={`product-image-${product.id}`}
             className={`${gridForm === "row" ? "h-30 w-30 md:w-40 md:h-35" : "h-64 md:h-48 w-full"} object-cover rounded-xl`}
           />
 

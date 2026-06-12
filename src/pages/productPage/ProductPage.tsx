@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import FormGrid from "./FormGrid";
 import RenderProducts from "./components/RenderProducts";
-import type { FormGridData, ProductPageProps } from "../../types/types";
+import type { FormGridData, ProductPageProps } from "../../types/productPage";
 import { productContext } from "../../hooks/useProduct";
 
 const ProductPage = ({ setIsShipping }: ProductPageProps) => {

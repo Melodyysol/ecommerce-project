@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { type FormData } from "../../types/types";
+import { type FormData } from "../../types/auth";
 import Toast from "../../components/Toast";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { UserContext } from "../../hooks/useUser";
