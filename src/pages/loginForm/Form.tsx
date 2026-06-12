@@ -38,6 +38,12 @@ const Form = ({ user }: { user: "register" | "login" }) => {
     throw new Error("useUser must be used within UserProvider");
   }
 
+  const getAutocomplete = (name: string) => {
+    if (name === "username") return "username";
+    if (name === "email") return "email";
+    return user === "register" ? "new-password" : "current-password";
+  };
+
   const [registeredData, setRegisteredData] = useState<FormData[]>(() => {
     const savedData = window.localStorage.getItem("formData");
     return savedData ? JSON.parse(savedData) : [];
@@ -139,6 +145,8 @@ const Form = ({ user }: { user: "register" | "login" }) => {
             <span className="capitalize">username</span>
           </label>
           <input
+            id="username"
+            autoComplete={getAutocomplete("username")}
             {...register("username", {
               required: "Username is not provided",
               minLength: {
@@ -161,7 +169,9 @@ const Form = ({ user }: { user: "register" | "login" }) => {
             <span className="capitalize">{formInput.name}</span>
           </label>
           <input
-            type={formInput.name}
+            type={formInput.name === "password" ? "password" : formInput.name}
+            id={formInput.name}
+            autoComplete={getAutocomplete(formInput.name)}
             {...register(formInput.name as keyof FormData, {
               required:
                 formInput.name === "email"
@@ -224,7 +234,11 @@ const Form = ({ user }: { user: "register" | "login" }) => {
             });
             window.localStorage.setItem(
               "user",
-              JSON.stringify({ userId: "demo", username: "demo", email: "demo@user.com" }),
+              JSON.stringify({
+                userId: "demo",
+                username: "demo",
+                email: "demo@user.com",
+              }),
             );
             navigate(fromPage, { replace: true });
           }}

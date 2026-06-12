@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, type ReactNode } from "react";
+import { useContext, useEffect, useReducer, useRef, type ReactNode } from "react";
 import { CartContext, cartReducer } from "../hooks/useCart";
 import { UserContext } from "../hooks/useUser";
 
@@ -8,6 +8,7 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
     throw new Error("useUser must be used within UserProvider");
   }
   const userId = context.user?.userId ?? "demo";
+  const previousUserId = useRef(userId);
 
   const [state, dispatch] = useReducer(cartReducer, [], () => {
     const savedData = localStorage.getItem(`cart_${userId}`);
@@ -15,6 +16,11 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
+    if (previousUserId.current !== userId) {
+      previousUserId.current = userId;
+      return;
+    }
+
     localStorage.setItem(`cart_${userId}`, JSON.stringify(state));
   }, [state, userId]);
 
