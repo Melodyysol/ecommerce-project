@@ -20,6 +20,6 @@ describe("About page", () => {
       within(screen.getByTestId("header-message")).getByText("We love"),
     ).toBeDefined();
 
-    // expect(screen.getByTestId("developer-image")).toHaveAttribute("src", "../../assets/developerImg.png");
+    // expect(screen.getByTestId("developer-image")).toHaveAttribute("src", "../../../dist/assets/developerImage.png");
   });
 });

@@ -3,12 +3,12 @@ import Header from "../../components/Header";
 import type { OrderPageProps } from "../../types/order";
 
 const OrderPage = ({ orders }: OrderPageProps) => {
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 8;
 
-  const totalPages = Math.round(orders.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(orders.length / ITEMS_PER_PAGE);
   const pages = Array.from({ length: totalPages }, (_, i) => String(i + 1));
 
-  const pageButton: ((typeof pages)[number] | "next" | "prev")[] = [
+  const pageButton: (string | "next" | "prev")[] = [
     "prev",
     ...pages,
     "next",

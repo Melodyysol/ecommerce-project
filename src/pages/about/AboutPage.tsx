@@ -5,7 +5,7 @@ import { FiInstagram } from "react-icons/fi";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa6";
 
-import DeveloperImage from "../../assets/developerImg.png";
+import DeveloperImage from "../../../dist/assets/developerImage.png";
 const AboutPage = () => {
   useEffect(() => {
     document.title = "About";

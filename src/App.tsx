@@ -16,6 +16,7 @@ import OrderPage from "./pages/order/OrderPage";
 import { setFavicon } from "./utilities/favicon";
 import Page from "./components/Page";
 import { AnimatePresence } from "motion/react";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const [orders, setOrder] = useState<Order[]>(() => {
@@ -126,6 +127,14 @@ function App() {
           element={
             <Page>
               <Register />
+            </Page>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Page>
+              <NotFoundPage />
             </Page>
           }
         />
