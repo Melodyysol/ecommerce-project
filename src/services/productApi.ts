@@ -8,7 +8,6 @@ export const fetchProducts = async (): Promise<Products[]> => {
     const apiUrl = getProductsEndpoint();
     
     const response = await axios.get(apiUrl);
-    // if (!response) throw new Error("Error in fetching data");
 
     const validatingProducts = productSchemaArrary.safeParse(response.data);
 

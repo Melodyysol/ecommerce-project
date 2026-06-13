@@ -30,7 +30,7 @@ const HomePage = () => {
         JSON.stringify({ message: error.message, id: crypto.randomUUID() }),
       );
     }
-  }, [isError, error, toastContext]);
+  }, [isError, error]);
 
   return (
     <main className="bg-base-100 text-base-content min-h-screen pb-15">

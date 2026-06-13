@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import { BsTwitter } from "react-icons/bs";
 import { FiInstagram } from "react-icons/fi";
 import { BsGithub } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa6";
 
-import DeveloperImage from "../assets/developerImg.png";
+import DeveloperImage from "../../assets/developerImg.png";
 const AboutPage = () => {
   useEffect(() => {
     document.title = "About";
@@ -15,7 +15,7 @@ const AboutPage = () => {
     <main>
       <Header />
       <section className="w-10/12 mx-auto mt-20 text-base-content">
-        <h1 className="text-center text-4xl md:text-6xl font-bold">
+        <h1 className="text-center text-4xl md:text-6xl font-bold" data-testId="header-message">
           We love{" "}
           <span className="bg-primary text-gray-300 rounded-2xl py-4 px-8 md:text-3xl">
             Comfy
@@ -43,6 +43,7 @@ const AboutPage = () => {
               src={DeveloperImage}
               alt="Developer"
               className="w-48 h-48 rounded-full object-cover"
+              data-testId="developer-image"
             />
             <div>
               <h3 className="text-2xl font-semibold">Abdulwaris Atere</h3>

@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
 import HomePage from "./pages/homePage/HomePage";
-import AboutPage from "./pages/AboutPage";
+import AboutPage from "./pages/about/AboutPage";
 import CartPage from "./pages/cart/CartPage";
 import ProductPage from "./pages/productPage/ProductPage";
 import ProductItem from "./components/ProductItem";
@@ -55,31 +55,80 @@ function App() {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <Routes location={location} key={location.pathname}>
-        <Route index element={<Page><HomePage /></Page>} />
-        <Route path="/about" element={<Page><AboutPage /></Page>} />
+        <Route
+          index
+          element={
+            <Page>
+              <HomePage />
+            </Page>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <Page>
+              <AboutPage />
+            </Page>
+          }
+        />
         <Route
           path="/cart"
           element={
             <ProtectedRoute>
-              <Page><CartPage isShipping={isShipping} /></Page>
+              <Page>
+                <CartPage isShipping={isShipping} />
+              </Page>
             </ProtectedRoute>
           }
         />
         <Route
           path="/products"
-          element={<Page><ProductPage setIsShipping={setIsShipping} /></Page>}
+          element={
+            <Page>
+              <ProductPage setIsShipping={setIsShipping} />
+            </Page>
+          }
         />
         <Route
           path="/item/:id"
-          element={<Page><ProductItem quantity={quantity} setQuantity={setQuantity} /></Page>}
+          element={
+            <Page>
+              <ProductItem quantity={quantity} setQuantity={setQuantity} />
+            </Page>
+          }
         />
         <Route
           path="/checkout"
-          element={<Page><CheckoutPage isShipping={isShipping} setOrder={setOrder} /></Page>}
+          element={
+            <Page>
+              <CheckoutPage isShipping={isShipping} setOrder={setOrder} />
+            </Page>
+          }
         />
-        <Route path="/order" element={<Page><OrderPage orders={orders} /></Page>} />
-        <Route path="/login" element={<Page><Login /></Page>} />
-        <Route path="/register" element={<Page><Register /></Page>} />
+        <Route
+          path="/order"
+          element={
+            <Page>
+              <OrderPage orders={orders} />
+            </Page>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Page>
+              <Login />
+            </Page>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Page>
+              <Register />
+            </Page>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
