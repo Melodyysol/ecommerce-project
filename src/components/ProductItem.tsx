@@ -26,7 +26,7 @@ const ProductItem = ({ setQuantity, quantity }: ItemPageProp) => {
 
   const { dispatch } = useContext(CartContext);
 
-  const itemId = params.id!;
+  const itemId = params.id;
 
   const filteredItem = products.find((item) => String(item.id) === itemId);
 

@@ -30,6 +30,7 @@ const HomePage = () => {
         JSON.stringify({ message: error.message, id: crypto.randomUUID() }),
       );
     }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError, error]);
 
   return (

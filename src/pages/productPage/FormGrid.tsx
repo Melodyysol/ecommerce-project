@@ -4,23 +4,6 @@ import { useRef, useState } from "react";
 import type { FormGridData } from "../../types/productPage";
 import { formatCurrency } from "../../utilities/money";
 
-// const forms: Forms = [{
-//   name: 'search',
-//   labelName: 'search',
-//   inputType: 'search'
-// },{
-//   name: 'search',
-//   labelName: 'search',
-//   inputType: 'search'
-// },{
-//   name: 'search',
-//   labelName: 'search',
-//   inputType: 'search'
-// },{
-//   name: 'search',
-//   labelName: 'search',
-//   inputType: 'search'
-// }]
 
 const companies = ["all", "ikea", "marcos", "liddy", "caressa"];
 
@@ -64,7 +47,7 @@ const FormGrid = ({
       order: orderValue,
       companyRef: companyValue,
       range: rangeValue,
-    });
+    });    
   };
 
   return (
@@ -81,6 +64,7 @@ const FormGrid = ({
             ref={search}
             type="search"
             name="search"
+            id="search"
             className="input input-sm mt-2"
           />
         </div>
@@ -111,6 +95,7 @@ const FormGrid = ({
             ref={companyRef}
             name="company"
             id="company"
+            autoComplete="off"
             className="select select-sm cursor-pointer mt-2 capitalize"
           >
             {companies.map((company) => (
@@ -148,6 +133,7 @@ const FormGrid = ({
             onChange={(e) => setRangeInput(Number(e.target.value))}
             type="range"
             name="price"
+            id="price"
             className=" range range-primary range-sm mt-2"
             min={0}
             max={5000}
@@ -168,6 +154,7 @@ const FormGrid = ({
             onChange={() => setIsShipping((prev) => !prev)}
             type="checkbox"
             name="shipping"
+            id="shipping"
             className="checkbox checkbox-primary checkbox-sm mt-2"
           />
         </div>
